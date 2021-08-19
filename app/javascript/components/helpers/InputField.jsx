@@ -1,16 +1,8 @@
-import React from "react";
-import { Input, FormGroup, FormFeedback } from "reactstrap";
+import React from "react"
+import { Input, FormGroup, FormFeedback } from "reactstrap"
 
 export default function InputField(props) {
-  const { input, meta } = props;
-  const userInput = {
-    checked: input.checked,
-    name: input.name,
-    onBlur: input.onBlur,
-    onChange: input.onChange,
-    onFocus: input.onFocus,
-    value: input.value.toUpperCase(),
-  };
+  const { input, meta } = props
 
   return (
     <div>
@@ -19,15 +11,12 @@ export default function InputField(props) {
           valid={meta.touched && meta.valid}
           invalid={meta.touched && meta.invalid}
           type="text"
-          onChange={(e) => {
-            input.onChange(e.target.value);
-          }}
-          value={input.value}
+          {...input}
           placeholder={props.label}
         />
         <FormFeedback valid>Valid</FormFeedback>
         <FormFeedback invalid="true">{meta.error}</FormFeedback>
       </FormGroup>
     </div>
-  );
+  )
 }

@@ -3,17 +3,17 @@ import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap"
 import { Form } from "react-final-form"
-import { addProject } from "./actions"
-import ProjectForm from "./form"
+import EmployeeForm from "./form"
+import { addEmployee } from "./actions"
 
 function mapStateToProps(state) {
-  return { projects: state.projects }
+  return { employees: state.Employees }
 }
 
 function NewProject(props) {
   const handleSubmit = (values) => {
-    props.addProject(values)
-    props.history.push("/?tab=2")
+    props.addEmployee(values)
+    props.history.push("/")
   }
 
   return (
@@ -21,16 +21,16 @@ function NewProject(props) {
       <br />
       <Breadcrumb>
         <BreadcrumbItem>
-          <Link to={"/?tab=2"}>Projects</Link>
+          <Link to={"/"}>Employees</Link>
         </BreadcrumbItem>
         <BreadcrumbItem active tag="span">
-          New Project
+          New Employee
         </BreadcrumbItem>
       </Breadcrumb>
       <br />
-      <Form component={ProjectForm} onSubmit={handleSubmit} />
+      <Form component={EmployeeForm} onSubmit={handleSubmit} />
     </Container>
   )
 }
 
-export default connect(mapStateToProps, { addProject })(NewProject)
+export default connect(mapStateToProps, { addEmployee })(NewProject)

@@ -10,4 +10,13 @@ class ProjectsController < ApplicationController
     Project.create(project_params)
     head :ok
   end
+
+  def destroy
+    @project = Project.find(params[:id])
+    if @project.destroy
+      render :show
+    end
+  end
+
+  
 end

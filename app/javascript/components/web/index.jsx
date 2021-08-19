@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { getProjects } from "../projects/web/actions";
-import _ from "lodash";
-import classnames from "classnames";
+import React, { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+import { connect } from "react-redux"
+import { getProjects, deleteProject } from "../projects/web/actions"
+import { getEmployees } from "../employees/web/actions"
+import _ from "lodash"
+import classnames from "classnames"
 import {
   Button,
   Container,
@@ -15,29 +16,35 @@ import {
   Row,
   Col,
   Table,
-} from "reactstrap";
+} from "reactstrap"
 
 function mapStateToProps(state) {
-  return { projects: state.projects };
+  return { projects: state.projects, employees: state.employees }
 }
 
 function Index(props) {
   useEffect(() => {
     if (props.projects.length === 0) {
-      props.getProjects();
+      props.getProjects()
     }
-  }, []);
+  }, [])
 
-  let initialState = "1";
+  useEffect(() => {
+    if (props.employees.length === 0) {
+      props.getEmployees()
+    }
+  }, [])
+
+  let initialState = "1"
   if (props.location.search === "?tab=2") {
-    initialState = "2";
+    initialState = "2"
   }
 
-  const [activeTab, setActiveTab] = useState(initialState);
+  const [activeTab, setActiveTab] = useState(initialState)
 
   const toggle = (tab) => {
-    if (activeTab !== tab) setActiveTab(tab);
-  };
+    if (activeTab !== tab) setActiveTab(tab)
+  }
 
   return (
     <Container>
@@ -47,7 +54,7 @@ function Index(props) {
           <NavLink
             className={classnames({ active: activeTab === "1" })}
             onClick={() => {
-              toggle("1");
+              toggle("1")
             }}
           >
             Employees
@@ -57,7 +64,7 @@ function Index(props) {
           <NavLink
             className={classnames({ active: activeTab === "2" })}
             onClick={() => {
-              toggle("2");
+              toggle("2")
             }}
           >
             Projects
@@ -85,9 +92,9 @@ function Index(props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {_.map(props.employees, (employee) => (
+                  {_.map(props.employees, (employee) => (
                     <Employee key={employee.id} employee={employee} />
-                  ))} */}
+                  ))}
                 </tbody>
               </Table>
             </Col>
@@ -114,7 +121,11 @@ function Index(props) {
                 </thead>
                 <tbody>
                   {_.map(props.projects, (project) => (
-                    <Project key={project.id} project={project} />
+                    <Project
+                      key={project.id}
+                      project={project}
+                      deleteProject={props.deleteProject}
+                    />
                   ))}
                 </tbody>
               </Table>
@@ -123,13 +134,17 @@ function Index(props) {
         </TabPane>
       </TabContent>
     </Container>
-  );
+  )
 }
 
-export default connect(mapStateToProps, { getProjects })(Index);
+export default connect(mapStateToProps, {
+  getProjects,
+  deleteProject,
+  getEmployees,
+})(Index)
 
 const Project = (props) => {
-  const { project } = props;
+  const { project } = props
 
   return (
     <tr>
@@ -140,10 +155,36 @@ const Project = (props) => {
         <Link to={`projects/${project.id}/edit`}>
           <Button size="sm">Edit</Button>
         </Link>{" "}
+        <Button
+          color="danger"
+          size="sm"
+          onClick={() => {
+            props.deleteProject(project.id)
+          }}
+        >
+          Delete
+        </Button>
+      </td>
+    </tr>
+  )
+}
+
+const Employee = (props) => {
+  const { employee } = props
+
+  return (
+    <tr>
+      <td>{employee.id}</td>
+      <td>{employee.fname}</td>
+      <td>{employee.lname}</td>
+      <td>
+        <Link to={`employees/${employee.id}/edit`}>
+          <Button size="sm">Edit</Button>
+        </Link>{" "}
         <Button color="danger" size="sm">
           Delete
         </Button>
       </td>
     </tr>
-  );
-};
+  )
+}

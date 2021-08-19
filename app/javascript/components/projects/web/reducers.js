@@ -1,16 +1,29 @@
-import { GET_PROJECTS, ADD_PROJECT } from "./actions";
+import {
+  GET_PROJECTS,
+  ADD_PROJECT,
+  DELETE_PROJECT,
+  UPDATE_PROJECT,
+} from "./actions"
 
 export default function projectsReducer(state = [], action) {
   switch (action.type) {
     case `${GET_PROJECTS}_FULFILLED`: {
-      return action.payload.data;
+      return action.payload.data
     }
     case `${ADD_PROJECT}_FULFILLED`: {
-      console.log(action.payload);
-      const newState = [...state];
-      return newState;
+      const newState = [...state]
+      return newState
+    }
+    case `${DELETE_PROJECT}_FULFILLED`: {
+      let newState = [...state]
+      const id = action.payload.data.id
+      newState = newState.filter((p) => p.id != id)
+      return newState
+    }
+    case `${UPDATE_PROJECT}_FULFILLED`: {
+      console.log(action.payload)
     }
     default:
-      return state;
+      return state
   }
 }
