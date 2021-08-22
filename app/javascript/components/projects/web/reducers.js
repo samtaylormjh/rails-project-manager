@@ -11,17 +11,24 @@ export default function projectsReducer(state = [], action) {
       return action.payload.data
     }
     case `${ADD_PROJECT}_FULFILLED`: {
+      console.log(action)
       const newState = [...state]
       return newState
     }
     case `${DELETE_PROJECT}_FULFILLED`: {
       let newState = [...state]
       const id = action.payload.data.id
+      console.log(action.payload.data)
       newState = newState.filter((p) => p.id != id)
       return newState
     }
     case `${UPDATE_PROJECT}_FULFILLED`: {
-      console.log(action.payload)
+      let newState = [...state]
+      const indexToUpdate = newState.findIndex(
+        (p) => p.id == action.payload.data.id
+      )
+      newState[indexToUpdate] = action.payload.data
+      return newState
     }
     default:
       return state

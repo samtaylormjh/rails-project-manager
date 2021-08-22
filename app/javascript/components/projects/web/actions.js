@@ -20,8 +20,6 @@ export const addProject = (project) => {
   }
 }
 
-// "#<ActionController::RoutingError: No route matches [DELETE] \"/projects.json\">"
-
 export const DELETE_PROJECT = "DELETE_PROJECT"
 export const deleteProject = (id) => {
   const request = axios.delete(`/projects/${id}.json`)
@@ -33,10 +31,11 @@ export const deleteProject = (id) => {
 
 export const UPDATE_PROJECT = "UPDATE_PROJECT"
 export const updateProject = (project) => {
-  const request = axios.put("/projects.json/" + project.id, { project })
+  const request = axios.put(`/projects/${project.id}.json`, {
+    name: project.name,
+  })
   return {
     type: UPDATE_PROJECT,
-    project: project,
     payload: request,
   }
 }
