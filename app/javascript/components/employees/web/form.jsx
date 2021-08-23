@@ -19,7 +19,7 @@ export default function EmployeeForm(props) {
       <Container>
         <FormGroup row>
           <Label for="fname" sm={2}>
-            Name
+            First Name
           </Label>
           <Col sm={3}>
             <Field

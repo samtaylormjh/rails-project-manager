@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { connect } from "react-redux"
 import { getProjects, deleteProject } from "../projects/web/actions"
-import { getEmployees } from "../employees/web/actions"
+import { getEmployees, deleteEmployee } from "../employees/web/actions"
 import _ from "lodash"
 import classnames from "classnames"
 import {
@@ -93,7 +93,11 @@ function Index(props) {
                 </thead>
                 <tbody>
                   {_.map(props.employees, (employee) => (
-                    <Employee key={employee.id} employee={employee} />
+                    <Employee
+                      key={employee.id}
+                      employee={employee}
+                      deleteEmployee={props.deleteEmployee}
+                    />
                   ))}
                 </tbody>
               </Table>
@@ -141,6 +145,7 @@ export default connect(mapStateToProps, {
   getProjects,
   deleteProject,
   getEmployees,
+  deleteEmployee,
 })(Index)
 
 const Project = (props) => {
@@ -181,7 +186,13 @@ const Employee = (props) => {
         <Link to={`employees/${employee.id}/edit`}>
           <Button size="sm">Edit</Button>
         </Link>{" "}
-        <Button color="danger" size="sm">
+        <Button
+          color="danger"
+          size="sm"
+          onClick={() => {
+            props.deleteEmployee(employee.id)
+          }}
+        >
           Delete
         </Button>
       </td>
