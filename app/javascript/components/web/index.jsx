@@ -119,7 +119,7 @@ function Index(props) {
                 <thead>
                   <tr>
                     <th>Project</th>
-                    <th>Project Manager</th>
+                    <th>Assigned Employees</th>
                     <th>Project ID</th>
                   </tr>
                 </thead>
@@ -128,6 +128,7 @@ function Index(props) {
                     <Project
                       key={project.id}
                       project={project}
+                      employees={props.employees}
                       deleteProject={props.deleteProject}
                     />
                   ))}
@@ -149,7 +150,10 @@ export default connect(mapStateToProps, {
 })(Index)
 
 const Project = (props) => {
-  const { project } = props
+  const { project, employees } = props
+  const assignedEmployees = employees.map((e) => {
+    const id = _.filter(e.project, (id) => console.log(id))
+  })
 
   return (
     <tr>
