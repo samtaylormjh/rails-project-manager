@@ -1,7 +1,7 @@
 import React from "react"
 import { Field } from "react-final-form"
 import { Container, FormGroup, Label, Col, Button } from "reactstrap"
-import { InputField } from "../../helpers"
+import { InputField, SelectField } from "../../helpers"
 
 const required = (value) => (value ? undefined : "Required")
 
@@ -40,6 +40,21 @@ export default function EmployeeForm(props) {
               component={InputField}
               name="lname"
               label="Last Name"
+              validate={composeValidators(required)}
+            />
+          </Col>
+        </FormGroup>
+        <br />
+        <FormGroup row>
+          <Label for="project" sm={2}>
+            Project
+          </Label>
+          <Col sm={3}>
+            <Field
+              component={SelectField}
+              name="project"
+              label="Project"
+              projects={props.projects}
               validate={composeValidators(required)}
             />
           </Col>

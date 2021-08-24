@@ -6,7 +6,7 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    employee_params = params[:employee].permit(:fname, :lname)
+    employee_params = params[:employee].permit(:fname, :lname, project: [])
     Employee.create(employee_params)
     head :ok
   end
@@ -29,6 +29,6 @@ class EmployeesController < ApplicationController
 
   private
     def employee_params
-      params.require(:employee).permit(:fname, :lname)
+      params.require(:employee).permit(:fname, :lname, :project)
     end
 end

@@ -5,19 +5,24 @@ import { Link } from "react-router-dom"
 import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap"
 import { Form } from "react-final-form"
 import EmployeeForm from "./form"
+import _ from "lodash"
 
 function mapStateToProps(state, ownProps) {
   const { employees } = state
   const selectedEmployee = employees.find(
     (e) => e.id == ownProps.match.params.id
   )
-  return { selectedEmployee }
+  return { selectedEmployee, projects: state.projects }
 }
 
 function EditProject(props) {
   const selectedEmployee = props.selectedEmployee
 
   const handleSubmit = (values) => {
+    const projectIds = values.project.map((p) => {
+      return p.value
+    })
+    values.project = projectIds
     props.updateEmployee(values)
     props.history.push("/")
   }
@@ -38,6 +43,7 @@ function EditProject(props) {
         component={EmployeeForm}
         onSubmit={handleSubmit}
         initialValues={selectedEmployee}
+        projects={props.projects}
       />
     </Container>
   )

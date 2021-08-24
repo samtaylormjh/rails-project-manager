@@ -7,14 +7,20 @@ import EmployeeForm from "./form"
 import { addEmployee } from "./actions"
 
 function mapStateToProps(state) {
-  return { employees: state.Employees }
+  return { employees: state.employees, projects: state.projects }
 }
 
 function NewProject(props) {
   const handleSubmit = (values) => {
+    const projectIds = values.project.map((p) => {
+      return p.value
+    })
+    values.project = projectIds
     props.addEmployee(values)
     props.history.push("/")
   }
+
+  console.log(props.projects)
 
   return (
     <Container>
@@ -28,7 +34,11 @@ function NewProject(props) {
         </BreadcrumbItem>
       </Breadcrumb>
       <br />
-      <Form component={EmployeeForm} onSubmit={handleSubmit} />
+      <Form
+        component={EmployeeForm}
+        onSubmit={handleSubmit}
+        projects={props.projects}
+      />
     </Container>
   )
 }

@@ -1,10 +1,10 @@
-import React from "react";
-import Select from "react-select";
-import { FormGroup } from "reactstrap";
-import _ from "lodash";
+import React from "react"
+import Select from "react-select"
+import { FormGroup } from "reactstrap"
+import _ from "lodash"
 
 export default function SelectField(props) {
-  const { input, meta, employees } = props;
+  const { input, meta, projects } = props
 
   const userInput = {
     checked: input.checked,
@@ -13,7 +13,7 @@ export default function SelectField(props) {
     onChange: input.onChange,
     onFocus: input.onFocus,
     value: input.value,
-  };
+  }
 
   return (
     <div>
@@ -23,14 +23,14 @@ export default function SelectField(props) {
           valid={meta.touched && meta.valid}
           invalid={meta.touched && meta.invalid}
           {...userInput}
-          options={_.map(employees, (e) => {
+          options={_.map(projects, (p) => {
             return {
-              value: e.id,
-              label: e.fname + " " + e.lname,
-            };
+              value: p.id,
+              label: p.name,
+            }
           })}
         />
       </FormGroup>
     </div>
-  );
+  )
 }
