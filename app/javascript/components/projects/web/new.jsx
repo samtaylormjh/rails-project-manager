@@ -3,17 +3,20 @@ import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap"
 import { Form } from "react-final-form"
+import arrayMutators from "final-form-arrays"
 import { addProject } from "./actions"
 import ProjectForm from "./form"
 
 function mapStateToProps(state) {
-  return { projects: state.projects }
+  return {}
 }
 
 function NewProject(props) {
   const handleSubmit = (values) => {
-    props.addProject(values)
-    props.history.push("/?tab=2")
+    const req = props.addProject(values)
+    req.then(() => {
+      props.history.push("/?tab=2")
+    })
   }
 
   return (
@@ -28,7 +31,13 @@ function NewProject(props) {
         </BreadcrumbItem>
       </Breadcrumb>
       <br />
-      <Form component={ProjectForm} onSubmit={handleSubmit} />
+      <Form
+        component={ProjectForm}
+        onSubmit={handleSubmit}
+        mutators={{
+          ...arrayMutators,
+        }}
+      />
     </Container>
   )
 }

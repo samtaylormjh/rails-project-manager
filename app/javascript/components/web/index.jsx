@@ -151,9 +151,10 @@ export default connect(mapStateToProps, {
 
 const Project = (props) => {
   const { project, employees } = props
-  const assignedEmployees = employees.map((e) => {
-    const id = _.filter(e.project, (id) => console.log(id))
-  })
+
+  // const assignedEmployees = _.map(employees, (e) => {
+  //   _.map(e.projects, (p) => {})
+  // })
 
   return (
     <tr>

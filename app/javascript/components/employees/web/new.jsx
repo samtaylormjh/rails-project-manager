@@ -12,15 +12,9 @@ function mapStateToProps(state) {
 
 function NewProject(props) {
   const handleSubmit = (values) => {
-    const projectIds = values.project.map((p) => {
-      return p.value
-    })
-    values.project = projectIds
     props.addEmployee(values)
     props.history.push("/")
   }
-
-  console.log(props.projects)
 
   return (
     <Container>

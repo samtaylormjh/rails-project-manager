@@ -6,9 +6,17 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    employee_params = params[:employee].permit(:fname, :lname, project: [])
+    employee_params = params[:employee].permit(:fname, :lname, :projects)
     Employee.create(employee_params)
     head :ok
+    # employee = Employee.new(employee_params)
+
+    # if employee.save
+    #   project_ids = params[:employee].permit(:projects)
+    #   project_ids.each do |project_id|
+    #     employee.projects.create(project_id:project_id)
+    #   end
+    # end
   end
 
   def destroy
@@ -29,6 +37,6 @@ class EmployeesController < ApplicationController
 
   private
     def employee_params
-      params.require(:employee).permit(:fname, :lname)
+      params.require(:employee).permit(:fname, :lname, :projects)
     end
 end

@@ -4,31 +4,31 @@ import { FormGroup } from "reactstrap"
 import _ from "lodash"
 
 export default function SelectField(props) {
-  const { input, meta, projects } = props
+  const { input, meta, options } = props
 
-  const userInput = {
-    checked: input.checked,
-    name: input.name,
-    onBlur: input.onBlur,
-    onChange: input.onChange,
-    onFocus: input.onFocus,
-    value: input.value,
+  // const userInput = {
+  //   checked: input.checked,
+  //   name: input.name,
+  //   onBlur: input.onBlur,
+  //   onChange: input.onChange,
+  //   onFocus: input.onFocus,
+  //   value: input.value,
+  // }
+
+  const customOnChange = (objectFromReactSelect) => {
+    const newValue = objectFromReactSelect.value
+    // call the onChange in the final-form field
+    input.onChange(newValue)
   }
 
   return (
     <div>
       <FormGroup>
         <Select
-          isMulti
           valid={meta.touched && meta.valid}
           invalid={meta.touched && meta.invalid}
-          {...userInput}
-          options={_.map(projects, (p) => {
-            return {
-              value: p.id,
-              label: p.name,
-            }
-          })}
+          onChange={customOnChange}
+          options={options}
         />
       </FormGroup>
     </div>

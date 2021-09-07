@@ -7,8 +7,9 @@ class ProjectsController < ApplicationController
 
   def create
     project_params = params[:project].permit(:name)
-    Project.create(project_params)
-    head :ok
+    @project = Project.new(project_params)
+    if @project.save
+    end
   end
 
   def destroy

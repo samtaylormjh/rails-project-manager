@@ -45,21 +45,21 @@ export default function EmployeeForm(props) {
           </Col>
         </FormGroup>
         <br />
-        <FormGroup row>
-          <Label for="project" sm={2}>
+        {/* <FormGroup row>
+          <Label for="projects" sm={2}>
             Project
           </Label>
           <Col sm={3}>
             <Field
               component={SelectField}
-              name="project"
+              name="projects"
               label="Project"
               projects={props.projects}
               validate={composeValidators(required)}
             />
           </Col>
         </FormGroup>
-        <br />
+        <br /> */}
         <Button type="submit" onClick={props.handleSubmit}>
           Submit
         </Button>
