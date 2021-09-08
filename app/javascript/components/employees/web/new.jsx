@@ -1,27 +1,27 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Link } from "react-router-dom"
-import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap"
-import { Form } from "react-final-form"
-import EmployeeForm from "./form"
-import { addEmployee } from "./actions"
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap";
+import { Form } from "react-final-form";
+import EmployeeForm from "./form";
+import { addEmployee } from "./actions";
 
 function mapStateToProps(state) {
-  return { employees: state.employees, projects: state.projects }
+  return { employees: state.employees, projects: state.projects };
 }
 
 function NewProject(props) {
   const handleSubmit = (values) => {
-    props.addEmployee(values)
-    props.history.push("/")
-  }
+    props.addEmployee(values);
+    props.history.push("/?tab=1");
+  };
 
   return (
     <Container>
       <br />
       <Breadcrumb>
         <BreadcrumbItem>
-          <Link to={"/"}>Employees</Link>
+          <Link to={"/?tab=1"}>Employees</Link>
         </BreadcrumbItem>
         <BreadcrumbItem active tag="span">
           New Employee
@@ -34,7 +34,7 @@ function NewProject(props) {
         projects={props.projects}
       />
     </Container>
-  )
+  );
 }
 
-export default connect(mapStateToProps, { addEmployee })(NewProject)
+export default connect(mapStateToProps, { addEmployee })(NewProject);

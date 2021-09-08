@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
-import { connect } from "react-redux"
-import { getProjects, deleteProject } from "../projects/web/actions"
-import { getEmployees, deleteEmployee } from "../employees/web/actions"
-import _ from "lodash"
-import classnames from "classnames"
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { getProjects, deleteProject } from "../projects/web/actions";
+import { getEmployees, deleteEmployee } from "../employees/web/actions";
+import _ from "lodash";
+import classnames from "classnames";
 import {
   Button,
   Container,
@@ -16,35 +16,37 @@ import {
   Row,
   Col,
   Table,
-} from "reactstrap"
+} from "reactstrap";
 
 function mapStateToProps(state) {
-  return { projects: state.projects, employees: state.employees }
+  return { projects: state.projects, employees: state.employees };
 }
 
 function Index(props) {
   useEffect(() => {
     if (props.projects.length === 0) {
-      props.getProjects()
+      props.getProjects();
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (props.employees.length === 0) {
-      props.getEmployees()
+      props.getEmployees();
     }
-  }, [])
+  }, []);
 
-  let initialState = "1"
+  let initialState = "1";
   if (props.location.search === "?tab=2") {
-    initialState = "2"
+    initialState = "2";
+  } else if (props.location.search === "?tab=1") {
+    initialState = "1";
   }
 
-  const [activeTab, setActiveTab] = useState(initialState)
+  const [activeTab, setActiveTab] = useState(initialState);
 
   const toggle = (tab) => {
-    if (activeTab !== tab) setActiveTab(tab)
-  }
+    if (activeTab !== tab) setActiveTab(tab);
+  };
 
   return (
     <Container>
@@ -54,7 +56,8 @@ function Index(props) {
           <NavLink
             className={classnames({ active: activeTab === "1" })}
             onClick={() => {
-              toggle("1")
+              toggle("1");
+              props.history.push("/?tab=1");
             }}
           >
             Employees
@@ -64,7 +67,8 @@ function Index(props) {
           <NavLink
             className={classnames({ active: activeTab === "2" })}
             onClick={() => {
-              toggle("2")
+              toggle("2");
+              props.history.push("/?tab=2");
             }}
           >
             Projects
@@ -139,7 +143,7 @@ function Index(props) {
         </TabPane>
       </TabContent>
     </Container>
-  )
+  );
 }
 
 export default connect(mapStateToProps, {
@@ -147,10 +151,10 @@ export default connect(mapStateToProps, {
   deleteProject,
   getEmployees,
   deleteEmployee,
-})(Index)
+})(Index);
 
 const Project = (props) => {
-  const { project, employees } = props
+  const { project, employees } = props;
 
   // const assignedEmployees = _.map(employees, (e) => {
   //   _.map(e.projects, (p) => {})
@@ -169,18 +173,18 @@ const Project = (props) => {
           color="danger"
           size="sm"
           onClick={() => {
-            props.deleteProject(project.id)
+            props.deleteProject(project.id);
           }}
         >
           Delete
         </Button>
       </td>
     </tr>
-  )
-}
+  );
+};
 
 const Employee = (props) => {
-  const { employee } = props
+  const { employee } = props;
 
   return (
     <tr>
@@ -195,12 +199,12 @@ const Employee = (props) => {
           color="danger"
           size="sm"
           onClick={() => {
-            props.deleteEmployee(employee.id)
+            props.deleteEmployee(employee.id);
           }}
         >
           Delete
         </Button>
       </td>
     </tr>
-  )
-}
+  );
+};
