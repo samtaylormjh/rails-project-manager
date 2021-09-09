@@ -1,23 +1,23 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Link } from "react-router-dom"
-import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap"
-import { Form } from "react-final-form"
-import arrayMutators from "final-form-arrays"
-import { addProject } from "./actions"
-import ProjectForm from "./form"
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap";
+import { Form } from "react-final-form";
+import arrayMutators from "final-form-arrays";
+import { addProject } from "./actions";
+import ProjectForm from "./form";
 
 function mapStateToProps(state) {
-  return {}
+  return {};
 }
 
 function NewProject(props) {
   const handleSubmit = (values) => {
-    const req = props.addProject(values)
+    const req = props.addProject(values);
     req.then(() => {
-      props.history.push("/?tab=2")
-    })
-  }
+      props.history.push("/?tab=2");
+    });
+  };
 
   return (
     <Container>
@@ -39,7 +39,7 @@ function NewProject(props) {
         }}
       />
     </Container>
-  )
+  );
 }
 
-export default connect(mapStateToProps, { addProject })(NewProject)
+export default connect(mapStateToProps, { addProject })(NewProject);

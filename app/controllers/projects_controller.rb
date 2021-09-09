@@ -7,9 +7,13 @@ class ProjectsController < ApplicationController
 
   def create
     project_params = params[:project].permit(:name)
-    @project = Project.new(project_params)
-    if @project.save
+    @project = Project.create(project_params)
+    
+    supervisor_params = params[:project].permit(site_supervisors: [:employee_id])
+    supervisor_params.each do |ss| 
+      @project.site_supervisors.create(ss[1])
     end
+    head :ok
   end
 
   def destroy

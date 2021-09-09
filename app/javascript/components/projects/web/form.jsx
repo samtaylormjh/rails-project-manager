@@ -1,13 +1,13 @@
-import React, { useEffect } from "react"
-import { Field } from "react-final-form"
-import { FieldArray } from "react-final-form-arrays"
-import { Container, FormGroup, Label, Col, Button } from "reactstrap"
-import { InputField, NumberField, SelectField } from "../../helpers"
-import { connect } from "react-redux"
-import { getEmployees } from "components/employees/web/actions"
-import { getProjects } from "./actions"
+import React, { useEffect } from "react";
+import { Field } from "react-final-form";
+import { FieldArray } from "react-final-form-arrays";
+import { Container, FormGroup, Label, Col, Button } from "reactstrap";
+import { InputField, NumberField, SelectField } from "../../helpers";
+import { connect } from "react-redux";
+import { getEmployees } from "components/employees/web/actions";
+import { getProjects } from "./actions";
 
-const required = (value) => (value ? undefined : "Required")
+const required = (value) => (value ? undefined : "Required");
 
 const composeValidators =
   (...validators) =>
@@ -15,23 +15,23 @@ const composeValidators =
     validators.reduce(
       (error, validator) => error || validator(value),
       undefined
-    )
+    );
 
 function mapStateToProps(state) {
-  return { projects: state.projects, employees: state.employees }
+  return { projects: state.projects, employees: state.employees };
 }
 
 function ProjectForm(props) {
   useEffect(() => {
     if (props.employees.length === 0) {
-      props.getEmployees()
+      props.getEmployees();
     }
     if (props.employees.length === 0) {
-      props.getProjects()
+      props.getProjects();
     }
-  }, [])
+  }, []);
 
-  const { employees, projects } = props
+  const { employees, projects } = props;
 
   return (
     <div>
@@ -70,20 +70,8 @@ function ProjectForm(props) {
                         name={`${name}.employee_id`}
                         label="Employees"
                         options={_.map(employees, (e) => {
-                          return { label: e.display_name, value: e.id }
+                          return { label: e.display_name, value: e.id };
                         })}
-                        validate={composeValidators(required)}
-                      />
-                    </Col>
-
-                    <Label for="hours" sm={2}>
-                      Hours Per Week
-                    </Label>
-                    <Col sm={3}>
-                      <Field
-                        name={`${name}.hours`}
-                        component={NumberField}
-                        label="Hours"
                         validate={composeValidators(required)}
                       />
                     </Col>
@@ -97,7 +85,7 @@ function ProjectForm(props) {
                       </Button>
                     </Col>
                   </FormGroup>
-                )
+                );
               })}
               <br />
               <Button type="button" onClick={() => fields.push()}>
@@ -112,9 +100,9 @@ function ProjectForm(props) {
         </Button>
       </Container>
     </div>
-  )
+  );
 }
 
 export default connect(mapStateToProps, { getEmployees, getProjects })(
   ProjectForm
-)
+);
