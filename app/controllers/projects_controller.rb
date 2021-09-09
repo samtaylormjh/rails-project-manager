@@ -7,12 +7,19 @@ class ProjectsController < ApplicationController
 
   def create
     project_params = params[:project].permit(:name)
-    @project = Project.create(project_params)
-    
     supervisor_params = params[:project].permit(site_supervisors: [:employee_id])
-    supervisor_params.each do |ss| 
-      @project.site_supervisors.create(ss[1])
+    
+    @project = Project.create(project_params)
+
+    supervisor_params["site_supervisors"].each do |ss|
+      @project.site_supervisors.create(ss)
     end
+    
+    # supervisor_params.each do |ss|
+    #   binding.pry
+    #   @project.site_supervisors.create(ss[1])
+    # end
+    
     head :ok
   end
 

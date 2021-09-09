@@ -22,6 +22,8 @@ function mapStateToProps(state) {
 }
 
 function ProjectForm(props) {
+  const defaultOptions = props?.initialValues?.site_supervisors;
+
   useEffect(() => {
     if (props.employees.length === 0) {
       props.getEmployees();
@@ -72,6 +74,7 @@ function ProjectForm(props) {
                         options={_.map(employees, (e) => {
                           return { label: e.display_name, value: e.id };
                         })}
+                        defaultOptions={defaultOptions}
                         validate={composeValidators(required)}
                       />
                     </Col>

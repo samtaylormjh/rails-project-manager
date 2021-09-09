@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProjects, deleteProject } from "../projects/web/actions";
@@ -155,7 +156,6 @@ export default connect(mapStateToProps, {
 
 const Project = (props) => {
   const { project, employees } = props;
-
   // const assignedEmployees = _.map(employees, (e) => {
   //   _.map(e.projects, (p) => {})
   // })
