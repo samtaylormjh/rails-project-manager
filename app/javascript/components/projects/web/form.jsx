@@ -6,6 +6,7 @@ import { InputField, NumberField, SelectField } from "../../helpers";
 import { connect } from "react-redux";
 import { getEmployees } from "components/employees/web/actions";
 import { getProjects } from "./actions";
+import _ from "lodash";
 
 const required = (value) => (value ? undefined : "Required");
 
@@ -33,7 +34,15 @@ function ProjectForm(props) {
     }
   }, []);
 
-  const { employees, projects } = props;
+  const { employees, projects, values } = props;
+
+  let site_supervisors_selected = [];
+  if (!_.isEmpty(values?.site_supervisors)) {
+    site_supervisors_selected = _.map(
+      values.site_supervisors,
+      (ss) => ss.employee_id
+    );
+  }
 
   return (
     <div>
@@ -57,46 +66,13 @@ function ProjectForm(props) {
         <hr style={{ height: 5 }} />
         <br />
         <h3>Site Supervisors</h3>
-        <FieldArray name="site_supervisors">
-          {({ fields }) => (
-            <div>
-              {fields.map((name, index) => {
-                return (
-                  <FormGroup row key={index} className="mb-2">
-                    <Label for="employee_id" sm={2}>
-                      Employee
-                    </Label>
-                    <Col sm={3}>
-                      <Field
-                        component={SelectField}
-                        name={`${name}.employee_id`}
-                        label="Employees"
-                        options={_.map(employees, (e) => {
-                          return { label: e.display_name, value: e.id };
-                        })}
-                        defaultOptions={defaultOptions}
-                        validate={composeValidators(required)}
-                      />
-                    </Col>
-                    <Col>
-                      <Button
-                        type="button"
-                        color="danger"
-                        onClick={() => fields.remove(index)}
-                      >
-                        Remove
-                      </Button>
-                    </Col>
-                  </FormGroup>
-                );
-              })}
-              <br />
-              <Button type="button" onClick={() => fields.push()}>
-                Add New Site Supervisor +
-              </Button>
-            </div>
-          )}
-        </FieldArray>
+        <FieldArray
+          name="site_supervisors"
+          component={SiteSupervisorsAttributes}
+          employees={employees}
+          site_supervisors_selected={site_supervisors_selected}
+          defaultOptions={defaultOptions}
+        />
         <br />
         <Button type="submit" color="success" onClick={props.handleSubmit}>
           Submit
@@ -109,3 +85,82 @@ function ProjectForm(props) {
 export default connect(mapStateToProps, { getEmployees, getProjects })(
   ProjectForm
 );
+
+function SiteSupervisorsAttributes(props) {
+  const { fields, employees, defaultOptions, site_supervisors_selected } =
+    props;
+
+  return (
+    <div>
+      {fields.map((name, index) => (
+        <SiteSupervisorsFields
+          key={index}
+          index={index}
+          fields={fields}
+          name={name}
+          employees={employees}
+          defaultOptions={defaultOptions}
+          site_supervisors_selected={site_supervisors_selected}
+        />
+      ))}
+      <br />
+      <Button type="button" onClick={() => fields.push({})}>
+        Add New Site Supervisor +
+      </Button>
+    </div>
+  );
+}
+
+function SiteSupervisorsFields(props) {
+  const {
+    fields,
+    index,
+    employees,
+    defaultOptions,
+    name,
+    site_supervisors_selected,
+  } = props;
+
+  const thisField = fields?.value[index];
+
+  const options = _.map(employees, (e) => {
+    return { label: e.display_name, value: e.id };
+  });
+
+  let filteredOptions = _.clone(options);
+  if (!_.isEmpty(site_supervisors_selected)) {
+    filteredOptions = _.filter(
+      options,
+      (o) =>
+        !site_supervisors_selected.includes(o.value) ||
+        o.value == thisField.employee_id
+    );
+  }
+
+  return (
+    <FormGroup row key={index} className="mb-2">
+      <Label for="employee_id" sm={2}>
+        Employee
+      </Label>
+      <Col sm={3}>
+        <Field
+          component={SelectField}
+          name={`${name}.employee_id`}
+          label="Employees"
+          options={filteredOptions}
+          defaultOptions={defaultOptions}
+          validate={composeValidators(required)}
+        />
+      </Col>
+      <Col>
+        <Button
+          type="button"
+          color="danger"
+          onClick={() => fields.remove(index)}
+        >
+          Remove
+        </Button>
+      </Col>
+    </FormGroup>
+  );
+}

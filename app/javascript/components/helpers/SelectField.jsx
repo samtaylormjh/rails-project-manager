@@ -6,20 +6,18 @@ import _ from "lodash";
 export default function SelectField(props) {
   const { input, meta, options } = props;
 
+  // let filteredOptions = options.filter(
+  //   (o) => o.value !== props?.formValues?.employee_id
+  // );
+
   const defaultValue = options.find((o) => o.value == input.value);
 
-  // const userInput = {
-  //   checked: input.checked,
-  //   name: input.name,
-  //   onBlur: input.onBlur,
-  //   onChange: input.onChange,
-  //   onFocus: input.onFocus,
-  //   value: input.value,
-  // }
   const customOnChange = (objectFromReactSelect) => {
     const newValue = objectFromReactSelect.value;
+    if (newValue) {
+      input.onChange(newValue);
+    }
     // call the onChange in the final-form field
-    input.onChange(newValue);
   };
 
   return (
@@ -30,7 +28,7 @@ export default function SelectField(props) {
           invalid={meta.touched && meta.invalid}
           onChange={customOnChange}
           options={options}
-          defaultValue={defaultValue}
+          value={defaultValue}
         />
       </FormGroup>
     </div>
