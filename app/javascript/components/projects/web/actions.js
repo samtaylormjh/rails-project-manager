@@ -31,6 +31,7 @@ export const deleteProject = (id) => {
 
 export const UPDATE_PROJECT = "UPDATE_PROJECT";
 export const updateProject = (project) => {
+  // console.log(project);
   const request = axios.put(`/projects/${project.id}.json`, {
     name: project.name,
   });

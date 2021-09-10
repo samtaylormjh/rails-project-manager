@@ -1,8 +1,10 @@
-import React from "react"
-import { Input, FormGroup, FormFeedback } from "reactstrap"
+import React from "react";
+import { Input, FormGroup, FormFeedback } from "reactstrap";
 
 export default function InputField(props) {
-  const { input, meta } = props
+  const { input, meta } = props;
+
+  console.log(meta);
 
   return (
     <div>
@@ -10,7 +12,6 @@ export default function InputField(props) {
         <Input
           valid={meta.touched && meta.valid}
           invalid={meta.touched && meta.invalid}
-          type="text"
           {...input}
           placeholder={props.label}
         />
@@ -18,5 +19,9 @@ export default function InputField(props) {
         <FormFeedback invalid="true">{meta.error}</FormFeedback>
       </FormGroup>
     </div>
-  )
+  );
 }
+
+InputField.defaultProps = {
+  type: "text",
+};
