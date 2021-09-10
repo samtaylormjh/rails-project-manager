@@ -11,12 +11,13 @@ export default function employeesReducer(state = [], action) {
       return action.payload.data;
     }
     case `${ADD_EMPLOYEES}_FULFILLED`: {
-      let newEmployeeData = JSON.parse(action.payload.config.data);
+      let newEmployeeData = action.payload.data;
+
+      console.log(newEmployeeData);
       let newEmployee = {
-        key: newEmployeeData.employee.id,
-        id: newEmployeeData.employee.id,
-        fname: newEmployeeData.employee.fname,
-        lname: newEmployeeData.employee.lname,
+        id: newEmployeeData.id,
+        fname: newEmployeeData.fname,
+        lname: newEmployeeData.lname,
       };
       const newState = [...state, newEmployee];
       return newState;
