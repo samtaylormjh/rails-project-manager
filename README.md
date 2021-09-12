@@ -1,6 +1,6 @@
 # To Fix
 
-- Editing Employees/Porjects
+- Editing Employees/Projects
 
 - New projects being assigned previously deleted project IDS
 
