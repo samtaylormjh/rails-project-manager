@@ -1,19 +1,19 @@
-# TODO
+# To Fix
 
-[x] Ruby version
+- Editing Employees/Porjects
 
-- System dependencies
+- New projects being assigned previously deleted project IDS
 
-- Configuration
+- Site supervisor data isnt deleted when the project is
 
-- Database creation
+- New employees and projects arent displayed on the index page until refreshed
 
-- Database initialization
+- Its possible to delete employees assigned to a project
 
-- How to run the test suite
+- Adding projects without a supervisor adds a new project but doesnt redirect
 
-- Services (job queues, cache servers, search engines, etc.)
+- Projects can have duplicate names
 
-- Deployment instructions
+# To Add
 
-- ...
+- Notes to projects (type: textarea)
