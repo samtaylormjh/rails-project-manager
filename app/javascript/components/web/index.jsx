@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Select from "react-select";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProjects, deleteProject } from "../projects/web/actions";
@@ -17,6 +16,7 @@ import {
   Row,
   Col,
   Table,
+  Tooltip,
 } from "reactstrap";
 
 function mapStateToProps(state) {
@@ -102,6 +102,7 @@ function Index(props) {
                       key={employee.id}
                       employee={employee}
                       deleteEmployee={props.deleteEmployee}
+                      projects={props.projects}
                     />
                   ))}
                 </tbody>
@@ -188,7 +189,15 @@ const Project = (props) => {
 };
 
 const Employee = (props) => {
-  const { employee } = props;
+  const { employee, projects } = props;
+
+  let all_projects_ss = _.map(projects, (p) => p.site_supervisors);
+  all_projects_ss = _.flatten(all_projects_ss);
+  all_projects_ss = _.map(all_projects_ss, (p) => p.employee_id);
+
+  const disableDelete = _.includes(all_projects_ss, employee.id);
+
+  // const disableDelete = !_.isEmpty(employee.projects);
 
   return (
     <tr>
@@ -199,16 +208,58 @@ const Employee = (props) => {
         <Link to={`employees/${employee.id}/edit`}>
           <Button size="sm">Edit</Button>
         </Link>{" "}
-        <Button
-          color="danger"
-          size="sm"
-          onClick={() => {
-            props.deleteEmployee(employee.id);
-          }}
-        >
-          Delete
-        </Button>
+        <ButtonTooltip
+          disableDelete={disableDelete}
+          employee={employee}
+          deleteEmployee={props.deleteEmployee}
+        />
       </td>
     </tr>
   );
+};
+
+const ButtonTooltip = (props) => {
+  const { disableDelete, employee, deleteEmployee } = props;
+
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const toggle = () => setTooltipOpen(!tooltipOpen);
+
+  if (disableDelete) {
+    return (
+      <>
+        <Button
+          color="danger"
+          size="sm"
+          id={"DisabledButton-" + employee.id}
+          onClick={() => {
+            deleteEmployee(employee.id);
+          }}
+          style={{ pointerEvents: "auto" }}
+          disabled
+        >
+          Delete
+        </Button>
+        <Tooltip
+          placement="right"
+          isOpen={tooltipOpen}
+          target={"DisabledButton-" + employee.id}
+          toggle={toggle}
+        >
+          Employee is a site supervisor
+        </Tooltip>
+      </>
+    );
+  } else {
+    return (
+      <Button
+        color="danger"
+        size="sm"
+        onClick={() => {
+          deleteEmployee(employee.id);
+        }}
+      >
+        Delete
+      </Button>
+    );
+  }
 };

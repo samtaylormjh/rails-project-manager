@@ -23,7 +23,7 @@ function EditProject(props) {
   const selectedProject = props.selectedProject;
   const handleSubmit = (values) => {
     props.updateProject(values);
-    props.history.push("/");
+    props.history.push("/?tab=2");
   };
 
   return (

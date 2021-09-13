@@ -20,12 +20,13 @@ class ProjectsController < ApplicationController
     #   @project.site_supervisors.create(ss[1])
     # end
     
-    head :ok
+    render :show
   end
 
   def destroy
     @project = Project.find(params[:id])
     if @project.destroy
+      @project.site_supervisors.destroy_all
       render :show
     end
   end

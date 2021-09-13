@@ -6,8 +6,8 @@ import promise from "redux-promise-middleware";
 import App from "./app";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducers, composeEnhancers(applyMiddleware(promise)));
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers, applyMiddleware(promise));
 
 export default function Entry() {
   return (
