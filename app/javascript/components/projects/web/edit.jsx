@@ -22,8 +22,11 @@ function EditProject(props) {
 
   const selectedProject = props.selectedProject;
   const handleSubmit = (values) => {
-    props.updateProject(values);
-    props.history.push("/?tab=2");
+    console.log(values);
+    const req = props.updateProject(values);
+    req.then(() => {
+      props.history.push("/?tab=2");
+    });
   };
 
   return (

@@ -234,7 +234,6 @@ const ButtonTooltip = (props) => {
           onClick={() => {
             deleteEmployee(employee.id);
           }}
-          style={{ pointerEvents: "auto" }}
           disabled
         >
           Delete

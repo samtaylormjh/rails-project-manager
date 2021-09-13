@@ -13,6 +13,7 @@ function mapStateToProps(state) {
 
 function NewProject(props) {
   const handleSubmit = (values) => {
+    console.log(values);
     const req = props.addProject(values);
     req.then(() => {
       props.history.push("/?tab=2");
