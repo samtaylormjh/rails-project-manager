@@ -125,7 +125,7 @@ function Index(props) {
                 <thead>
                   <tr>
                     <th>Project</th>
-                    <th>Assigned Employees</th>
+                    <th>Site Supervisors</th>
                     <th>Project ID</th>
                   </tr>
                 </thead>
