@@ -2,8 +2,6 @@
 
 - Editing Projects can be broken by removing a site supervisor then adding the same site supervisor
 
-- Projects can have duplicate names
-
 # To Add
 
 - Notes to projects (type: textarea)

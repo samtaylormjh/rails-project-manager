@@ -12,8 +12,11 @@ export default function projectsReducer(state = [], action) {
     }
     case `${ADD_PROJECT}_FULFILLED`: {
       let newProject = action.payload.data;
-      const newState = [...state, newProject];
-      return newState;
+
+      if (action.payload.data.id) {
+        const newState = [...state, newProject];
+        return newState;
+      } else return state;
     }
     case `${DELETE_PROJECT}_FULFILLED`: {
       let newState = [...state];
