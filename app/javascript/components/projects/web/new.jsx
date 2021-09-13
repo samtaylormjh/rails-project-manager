@@ -8,15 +8,24 @@ import { addProject } from "./actions";
 import ProjectForm from "./form";
 
 function mapStateToProps(state) {
-  return {};
+  return { projects: state.projects };
 }
 
 function NewProject(props) {
   const handleSubmit = (values) => {
-    const req = props.addProject(values);
-    req.then(() => {
-      props.history.push("/?tab=2");
-    });
+    const duplicateName = _.some(
+      props.projects,
+      (p) => p.name.toLowerCase() == values.name.toLowerCase()
+    );
+
+    if (duplicateName) {
+      alert("Project name already exists.");
+    } else {
+      const req = props.addProject(values);
+      req.then(() => {
+        props.history.push("/?tab=2");
+      });
+    }
   };
 
   return (
