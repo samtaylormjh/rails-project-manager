@@ -12,16 +12,12 @@ export default function employeesReducer(state = [], action) {
     }
     case `${ADD_EMPLOYEES}_FULFILLED`: {
       let newEmployeeData = action.payload.data;
-
       const newState = [...state, newEmployeeData];
-
-      console.log(newState);
       return newState;
     }
     case `${DELETE_EMPLOYEE}_FULFILLED`: {
       let newState = [...state];
       const id = action.payload.data.id;
-      console.log(newState, id);
       newState = newState.filter((e) => e.id != id);
       return newState;
     }

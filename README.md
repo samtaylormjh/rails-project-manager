@@ -1,6 +1,6 @@
 # To Fix
 
-- Editing Employees/Projects
+- Editing Projects can be broken by removing a site supervisor then adding the same site supervisor
 
 - Projects can have duplicate names
 

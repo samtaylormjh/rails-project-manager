@@ -3,7 +3,6 @@ import { Input, FormGroup, FormFeedback } from "reactstrap";
 
 export default function InputField(props) {
   const { input, meta } = props;
-  // console.log(meta);
 
   return (
     <div>

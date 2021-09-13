@@ -22,7 +22,6 @@ function EditProject(props) {
 
   const selectedProject = props.selectedProject;
   const handleSubmit = (values) => {
-    console.log(values);
     const req = props.updateProject(values);
     req.then(() => {
       props.history.push("/?tab=2");
