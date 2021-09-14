@@ -12,7 +12,19 @@ function mapStateToProps(state) {
 
 function NewProject(props) {
   const handleSubmit = (values) => {
-    const req = props.addEmployee(values);
+    const newValues = {
+      fname: values.fname,
+      lname: values.lname,
+      emergency_contacts: [
+        {
+          fname: values.ice_fname,
+          lname: values.ice_lname,
+          number: values.number,
+        },
+      ],
+    };
+
+    const req = props.addEmployee(newValues);
     req.then(() => {
       props.history.push("/?tab=1");
     });

@@ -7,7 +7,15 @@ class EmployeesController < ApplicationController
 
   def create
     employee_params = params[:employee].permit(:fname, :lname)
+    emergency_contact_params = params[:employee].permit(emergency_contacts: [:fname, :lname, :number])
+    
     @employee = Employee.create(employee_params)
+
+    if emergency_contact_params.present?
+      emergency_contact_params["emergency_contacts"].each do |ec|
+        @employee.emergency_contacts.create(ec)
+      end
+    end
     
     render :show
   end
