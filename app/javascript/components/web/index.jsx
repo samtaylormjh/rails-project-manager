@@ -228,13 +228,13 @@ const Employee = (props) => {
           {_.map(employee.projects, (emp) => {
             const assignedProject = _.find(
               projects,
-              (p) => p.id == emp.project_id
+              (p) => p.id == emp?.project_id
             );
             return (
-              <tr key={emp.project_id}>
+              <tr key={emp?.project_id}>
                 <td></td>
-                <td>{emp.project_id}</td>
-                <td>{assignedProject.name}</td>
+                <td>{emp?.project_id}</td>
+                <td>{assignedProject?.name}</td>
               </tr>
             );
           })}
