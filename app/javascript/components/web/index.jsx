@@ -17,9 +17,6 @@ import {
   Col,
   Table,
   Tooltip,
-  Collapse,
-  CardBody,
-  Card,
 } from "reactstrap";
 
 function mapStateToProps(state) {
