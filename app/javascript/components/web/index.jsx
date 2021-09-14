@@ -17,6 +17,9 @@ import {
   Col,
   Table,
   Tooltip,
+  Collapse,
+  CardBody,
+  Card,
 } from "reactstrap";
 
 function mapStateToProps(state) {
@@ -88,9 +91,10 @@ function Index(props) {
               </Link>
               <br />
               <br />
-              <Table hover size="sm">
+              <Table hover size="sm" style={{ tableLayout: "fixed" }}>
                 <thead>
                   <tr>
+                    <th></th>
                     <th>ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
@@ -121,7 +125,7 @@ function Index(props) {
               </Link>
               <br />
               <br />
-              <Table hover size="sm">
+              <Table hover size="sm" style={{ tableLayout: "fixed" }}>
                 <thead>
                   <tr>
                     <th>Project</th>
@@ -191,30 +195,55 @@ const Project = (props) => {
 const Employee = (props) => {
   const { employee, projects } = props;
 
-  let all_projects_ss = _.map(projects, (p) => p.site_supervisors);
-  all_projects_ss = _.flatten(all_projects_ss);
-  all_projects_ss = _.map(all_projects_ss, (p) => p.employee_id);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const disableDelete = _.includes(all_projects_ss, employee.id);
+  const toggle = () => setIsOpen(!isOpen);
 
-  // const disableDelete = !_.isEmpty(employee.projects);
+  const disableDelete = !_.isEmpty(employee.projects);
 
   return (
-    <tr>
-      <td>{employee.id}</td>
-      <td>{employee.fname}</td>
-      <td>{employee.lname}</td>
-      <td>
-        <Link to={`employees/${employee.id}/edit`}>
-          <Button size="sm">Edit</Button>
-        </Link>{" "}
-        <ButtonTooltip
-          disableDelete={disableDelete}
-          employee={employee}
-          deleteEmployee={props.deleteEmployee}
-        />
-      </td>
-    </tr>
+    <>
+      <tr>
+        <td onClick={toggle} style={{ cursor: "pointer" }}>
+          {isOpen ? "-" : "+"}
+        </td>
+        <td>{employee.id}</td>
+        <td>{employee.fname}</td>
+        <td>{employee.lname}</td>
+        <td>
+          <Link to={`employees/${employee.id}/edit`}>
+            <Button size="sm">Edit</Button>
+          </Link>{" "}
+          <ButtonTooltip
+            disableDelete={disableDelete}
+            employee={employee}
+            deleteEmployee={props.deleteEmployee}
+          />
+        </td>
+      </tr>
+      {isOpen && (
+        <>
+          <tr>
+            <th></th>
+            <th>Project ID</th>
+            <th>Project Name</th>
+          </tr>
+          {_.map(employee.projects, (emp) => {
+            const assignedProject = _.find(
+              projects,
+              (p) => p.id == emp.project_id
+            );
+            return (
+              <tr key={emp.project_id}>
+                <td></td>
+                <td>{emp.project_id}</td>
+                <td>{assignedProject.name}</td>
+              </tr>
+            );
+          })}
+        </>
+      )}
+    </>
   );
 };
 
