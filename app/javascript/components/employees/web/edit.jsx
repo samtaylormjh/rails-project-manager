@@ -1,5 +1,5 @@
-import React from "react";
-import { updateEmployee } from "./actions";
+import React, { useEffect } from "react";
+import { getEmployees, updateEmployee } from "./actions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap";
@@ -16,6 +16,10 @@ function mapStateToProps(state, ownProps) {
 }
 
 function EditProject(props) {
+  useEffect(() => {
+    props.getEmployees();
+  }, []);
+
   const selectedEmployee = props.selectedEmployee;
 
   const handleSubmit = (values) => {
@@ -47,4 +51,6 @@ function EditProject(props) {
   );
 }
 
-export default connect(mapStateToProps, { updateEmployee })(EditProject);
+export default connect(mapStateToProps, { getEmployees, updateEmployee })(
+  EditProject
+);

@@ -17,18 +17,12 @@ class ProjectsController < ApplicationController
       end
     end
     
-    # supervisor_params.each do |ss|
-    #   binding.pry
-    #   @project.site_supervisors.create(ss[1])
-    # end
-    
     render :show
   end
 
   def destroy
     @project = Project.find(params[:id])
     if @project.destroy
-    # @project.site_supervisors.destroy_all
       render :show
     end
   end

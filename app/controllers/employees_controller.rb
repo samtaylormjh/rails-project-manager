@@ -29,11 +29,15 @@ class EmployeesController < ApplicationController
 
   def update
     @employee = Employee.find(params[:id])
+    emergency_contact_params = params[:employee].permit(emergency_contacts: [:fname, :lname, :number])
+
     if @employee.update(employee_params)
+      binding.pry
       render :show, status: :ok, location: @employee
     else
       render json: @employee.errors, status: :unprocessable_entity
     end
+
   end
 
   private

@@ -21,6 +21,7 @@ function EditProject(props) {
   }, []);
 
   const selectedProject = props.selectedProject;
+
   const handleSubmit = (values) => {
     const req = props.updateProject(values);
     req.then(() => {

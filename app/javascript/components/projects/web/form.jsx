@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Field } from "react-final-form";
 import { FieldArray } from "react-final-form-arrays";
 import { Container, FormGroup, Label, Col, Button } from "reactstrap";
-import { InputField, NumberField, SelectField } from "../../helpers";
+import { InputField, SelectField } from "../../helpers";
 import { connect } from "react-redux";
 import { getEmployees } from "components/employees/web/actions";
 import { getProjects } from "./actions";
@@ -136,7 +136,6 @@ function SiteSupervisorsFields(props) {
         o.value == thisField.employee_id
     );
   }
-
   return (
     <FormGroup row key={index} className="mb-2">
       <Label for="employee_id" sm={2}>

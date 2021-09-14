@@ -10,4 +10,6 @@ json.emergency_contacts employee.emergency_contacts.each do |ec|
   json.employee_id ec.employee_id
   json.fname ec.fname
   json.lname ec.lname
+  json.number ec.number
+  json.primary ec.primary
 end

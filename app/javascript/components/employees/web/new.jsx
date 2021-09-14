@@ -5,6 +5,7 @@ import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap";
 import { Form } from "react-final-form";
 import EmployeeForm from "./form";
 import { addEmployee } from "./actions";
+import arrayMutators from "final-form-arrays";
 
 function mapStateToProps(state) {
   return { employees: state.employees, projects: state.projects };
@@ -12,19 +13,7 @@ function mapStateToProps(state) {
 
 function NewProject(props) {
   const handleSubmit = (values) => {
-    const newValues = {
-      fname: values.fname,
-      lname: values.lname,
-      emergency_contacts: [
-        {
-          fname: values.ice_fname,
-          lname: values.ice_lname,
-          number: values.number,
-        },
-      ],
-    };
-
-    const req = props.addEmployee(newValues);
+    const req = props.addEmployee(values);
     req.then(() => {
       props.history.push("/?tab=1");
     });
@@ -46,6 +35,9 @@ function NewProject(props) {
         component={EmployeeForm}
         onSubmit={handleSubmit}
         projects={props.projects}
+        mutators={{
+          ...arrayMutators,
+        }}
       />
     </Container>
   );

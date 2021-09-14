@@ -2,6 +2,8 @@
 
 - Editing Projects can be broken by removing a site supervisor then adding the same site supervisor
 
+- Emergency contact field array in form
+
 # To Add
 
 - Notes to projects (type: textarea)
