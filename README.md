@@ -8,10 +8,12 @@
 
 - After creating a new employee only the new employee is displayed on index until refreshed sometimes?
 
+- If a project has more than one site supervisor display their names separated by commas
+
 # To Add
 
 - Notes to projects (type: textarea)
 
 - Testing
 
-- If a project has more than one site supervisor display their names separated by commas
+- First ICE ticked primary by default

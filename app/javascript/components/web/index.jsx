@@ -17,6 +17,9 @@ import {
   Col,
   Table,
   Tooltip,
+  UncontrolledPopover,
+  PopoverHeader,
+  PopoverBody,
 } from "reactstrap";
 
 function mapStateToProps(state) {
@@ -128,6 +131,7 @@ function Index(props) {
                     <th>Project</th>
                     <th>Site Supervisors</th>
                     <th>Project ID</th>
+                    <th>Notes</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -159,18 +163,40 @@ export default connect(mapStateToProps, {
 const Project = (props) => {
   const { project, employees } = props;
 
-  const assignedEmployees = _.map(project.site_supervisors, (ss) => {
+  const assignedEmployees = _.map(project.site_supervisors, (ss, i) => {
     const findSupervisors = _.find(employees, (e) => e.id == ss.employee_id);
     if (findSupervisors) {
       return `${findSupervisors.fname} ${findSupervisors.lname}`;
     }
   });
 
+  if (project.notes == "") {
+    project.notes = "No notes for project.";
+  }
+
+  // if theres only 1 employee returns "and 'employee'"
+  // const last = assignedEmployees.pop();
+  // const employeeList = assignedEmployees.join(", ") + " and " + last;
+
   return (
     <tr>
       <td>{project.name}</td>
       <td>{assignedEmployees.join(" ")}</td>
       <td>{project.id}</td>
+      <td
+        style={{ color: "grey", cursor: "pointer" }}
+        id={`popover${project.id}`}
+      >
+        Click to view...
+      </td>
+      <UncontrolledPopover
+        trigger="legacy"
+        placement="right"
+        target={`popover${project.id}`}
+      >
+        <PopoverHeader>{project.name} Notes</PopoverHeader>
+        <PopoverBody>{project.notes}</PopoverBody>
+      </UncontrolledPopover>
       <td>
         <Link to={`projects/${project.id}/edit`}>
           <Button size="sm">Edit</Button>

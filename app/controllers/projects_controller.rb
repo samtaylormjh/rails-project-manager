@@ -6,9 +6,13 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    project_params = params[:project].permit(:name)
+    project_params = params[:project].permit(:name, :notes)
     supervisor_params = params[:project].permit(site_supervisors: [:employee_id])
-    
+
+    if project_params["notes"].nil? 
+      project_params["notes"] = ""
+    end
+
     @project = Project.create(project_params)
 
     if supervisor_params.present?
@@ -28,9 +32,9 @@ class ProjectsController < ApplicationController
   end
 
   def update    
-    project_params = params[:project].permit(:name)
+    project_params = params[:project].permit(:name, :notes)
     supervisor_params = params[:project].permit(site_supervisors: [:employee_id, :id])
-    
+
     @project = Project.find(params[:id])
     
     current_ss = @project.site_supervisors.map{|ss| ss.employee_id}

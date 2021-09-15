@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Field } from "react-final-form";
 import { FieldArray } from "react-final-form-arrays";
 import { Container, FormGroup, Label, Col, Button } from "reactstrap";
-import { InputField, SelectField } from "../../helpers";
+import { InputField, SelectField, TextareaField } from "../../helpers";
 import { connect } from "react-redux";
 import { getEmployees } from "components/employees/web/actions";
 import { getProjects } from "./actions";
@@ -59,6 +59,19 @@ function ProjectForm(props) {
               name="name"
               label="Project Name"
               validate={composeValidators(required)}
+            />
+          </Col>
+          <Col sm={1}></Col>
+          <Label for="notes" sm={1}>
+            Notes
+          </Label>
+          <Col sm={4}>
+            <Field
+              component={TextareaField}
+              name="notes"
+              type="textarea"
+              rows="4"
+              label="Project Notes..."
             />
           </Col>
         </FormGroup>
