@@ -8,6 +8,8 @@
 
 - First ICE ticked primary by default
 
+- Editing notes inside the note? Submit onBlur?
+
 - Testing
 
 # Reducer stuff
