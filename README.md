@@ -13,3 +13,5 @@
 - Notes to projects (type: textarea)
 
 - Testing
+
+- If a project has more than one site supervisor display their names separated by commas

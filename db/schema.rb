@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_14_032009) do
+ActiveRecord::Schema.define(version: 2021_09_15_032910) do
 
   create_table "employee_emergency_contacts", force: :cascade do |t|
     t.integer "employee_id"
     t.string "fname"
     t.string "lname"
-    t.integer "number"
+    t.string "number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "primary"
