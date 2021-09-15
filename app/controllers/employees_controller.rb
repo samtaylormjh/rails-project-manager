@@ -29,15 +29,34 @@ class EmployeesController < ApplicationController
 
   def update
     @employee = Employee.find(params[:id])
-    emergency_contact_params = params[:employee].permit(emergency_contacts: [:fname, :lname, :number, :primary])
+    emergency_contact_params = params[:employee].permit(emergency_contacts: [:id, :fname, :lname, :number, :primary])
     
-    if @employee.update(employee_params)
-      binding.pry
-      render :show, status: :ok, location: @employee
-    else
-      render json: @employee.errors, status: :unprocessable_entity
-    end
+    current_ec = @employee.emergency_contacts.map{|ec| ec.id}
+    updated_ec = emergency_contact_params["emergency_contacts"].map{|ec|ec["id"]}
 
+    if @employee.update(employee_params)
+      ec_to_delete = current_ec - updated_ec
+      ec_to_delete.each do |ec|
+        if ec.present?
+          @employee.emergency_contacts.find_by(id:ec).destroy
+        end
+      end
+
+    @employee = Employee.find(params[:id])      
+      
+      if emergency_contact_params.present?
+        emergency_contact_params["emergency_contacts"].each do |ec| 
+          if ec["id"].present? 
+            find_ec = @employee.emergency_contacts.find(ec["id"])
+            find_ec.update(ec.except("id"))
+          else
+            @employee.emergency_contacts.create(ec)
+          end
+        end
+      end
+      
+      render :show
+    end
   end
 
   private
