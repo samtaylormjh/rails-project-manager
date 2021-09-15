@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, Container } from "reactstrap";
 import { Form } from "react-final-form";
+import arrayMutators from "final-form-arrays";
 import EmployeeForm from "./form";
 import _ from "lodash";
 
@@ -46,6 +47,9 @@ function EditProject(props) {
         onSubmit={handleSubmit}
         initialValues={selectedEmployee}
         projects={props.projects}
+        mutators={{
+          ...arrayMutators,
+        }}
       />
     </Container>
   );

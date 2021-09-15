@@ -10,6 +10,7 @@ export default function InputField(props) {
         <Input
           valid={meta.touched && meta.valid}
           invalid={meta.touched && meta.invalid}
+          checked={input.type == "checkbox" ? input.value : null}
           {...input}
           placeholder={props.label}
         />

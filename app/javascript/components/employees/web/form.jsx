@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Field } from "react-final-form";
 import { FieldArray } from "react-final-form-arrays";
-import { Container, FormGroup, Label, Col, Button } from "reactstrap";
-import { InputField } from "../../helpers";
+import { Container, FormGroup, Label, Col, Button, Row } from "reactstrap";
+import { CheckboxField, InputField } from "../../helpers";
 
 const required = (value) => (value ? undefined : "Required");
 
@@ -15,6 +15,10 @@ const composeValidators =
     );
 
 export default function EmployeeForm(props) {
+  const {
+    form: { change },
+  } = props;
+
   return (
     <div>
       <Container>
@@ -54,9 +58,10 @@ export default function EmployeeForm(props) {
         <FieldArray
           name="emergency_contacts"
           component={EmergencyContactAttributes}
+          change={change}
         />
         <br />
-        <Button type="submit" onClick={props.handleSubmit}>
+        <Button type="submit" color="success" onClick={props.handleSubmit}>
           Submit
         </Button>
       </Container>
@@ -65,7 +70,15 @@ export default function EmployeeForm(props) {
 }
 
 function EmergencyContactAttributes(props) {
-  const { fields } = props;
+  const { fields, change } = props;
+
+  const uncheckAll = (nameNotToChange) => {
+    fields.forEach((nameToChange) => {
+      if (nameToChange != nameNotToChange) {
+        change(`${nameToChange}.primary`, false);
+      }
+    });
+  };
 
   return (
     <div>
@@ -75,6 +88,7 @@ function EmergencyContactAttributes(props) {
           index={index}
           fields={fields}
           name={name}
+          uncheckAll={uncheckAll}
         />
       ))}
       <br />
@@ -87,11 +101,17 @@ function EmergencyContactAttributes(props) {
 
 function EmergencyContactFields(props) {
   const { fields, index, name } = props;
+
+  const thisField = fields.value[index];
+
+  useEffect(() => {
+    if (thisField.primary == true) {
+      props.uncheckAll(name);
+    }
+  }, [thisField.primary]);
+
   return (
     <FormGroup row key={index} className="mb-2">
-      <Label for="fname" sm={2}>
-        Details
-      </Label>
       <Col sm={3}>
         <Field
           component={InputField}
@@ -107,6 +127,29 @@ function EmergencyContactFields(props) {
           name={`${name}.lname`}
           validate={composeValidators(required)}
         />
+      </Col>
+      <Col sm={3}>
+        <Field
+          component={InputField}
+          label="Number"
+          name={`${name}.number`}
+          validate={composeValidators(required)}
+        />
+      </Col>
+      <Col>
+        <Row>
+          <Col>
+            <Label for="primary">Primary</Label>
+          </Col>
+          <Col>
+            <Field
+              name={`${name}.primary`}
+              type="checkbox"
+              component={CheckboxField}
+              style={{ width: "20px", height: "20px" }}
+            />
+          </Col>
+        </Row>
       </Col>
       <Col>
         <Button

@@ -7,7 +7,7 @@ class EmployeesController < ApplicationController
 
   def create
     employee_params = params[:employee].permit(:fname, :lname)
-    emergency_contact_params = params[:employee].permit(emergency_contacts: [:fname, :lname, :number])
+    emergency_contact_params = params[:employee].permit(emergency_contacts: [:fname, :lname, :number, :primary])
     
     @employee = Employee.create(employee_params)
 
@@ -29,8 +29,8 @@ class EmployeesController < ApplicationController
 
   def update
     @employee = Employee.find(params[:id])
-    emergency_contact_params = params[:employee].permit(emergency_contacts: [:fname, :lname, :number])
-
+    emergency_contact_params = params[:employee].permit(emergency_contacts: [:fname, :lname, :number, :primary])
+    
     if @employee.update(employee_params)
       binding.pry
       render :show, status: :ok, location: @employee
