@@ -61,7 +61,7 @@ function ProjectForm(props) {
               validate={composeValidators(required)}
             />
           </Col>
-          <Col sm={1}></Col>
+          {/* <Col sm={1}></Col>
           <Label for="notes" sm={1}>
             Notes
           </Label>
@@ -73,7 +73,7 @@ function ProjectForm(props) {
               rows="4"
               label="Project Notes..."
             />
-          </Col>
+          </Col> */}
         </FormGroup>
         <br />
         <hr style={{ height: 5 }} />
