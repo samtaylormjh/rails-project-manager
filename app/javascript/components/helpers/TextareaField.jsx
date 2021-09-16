@@ -2,7 +2,7 @@ import React from "react";
 import { Input, FormGroup } from "reactstrap";
 
 export default function TextareaField(props) {
-  const { input, meta } = props;
+  const { input } = props;
 
   return (
     <div>

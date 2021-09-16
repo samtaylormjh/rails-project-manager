@@ -8,7 +8,7 @@
 
 - First ICE ticked primary by default
 
-- Editing notes inside the note? Submit onBlur?
+- Notes as an array, remove from the edit page and display a list of notes above the note form
 
 - Testing
 

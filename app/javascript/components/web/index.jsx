@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getProjects, deleteProject } from "../projects/web/actions";
+import {
+  getProjects,
+  deleteProject,
+  updateProject,
+} from "../projects/web/actions";
 import { getEmployees, deleteEmployee } from "../employees/web/actions";
+import { Form, Field } from "react-final-form";
 import _ from "lodash";
 import classnames from "classnames";
 import {
@@ -21,6 +26,7 @@ import {
   PopoverHeader,
   PopoverBody,
 } from "reactstrap";
+import { TextareaField } from "../helpers";
 
 function mapStateToProps(state) {
   return { projects: state.projects, employees: state.employees };
@@ -141,6 +147,7 @@ function Index(props) {
                       project={project}
                       employees={props.employees}
                       deleteProject={props.deleteProject}
+                      updateProject={props.updateProject}
                     />
                   ))}
                 </tbody>
@@ -158,6 +165,7 @@ export default connect(mapStateToProps, {
   deleteProject,
   getEmployees,
   deleteEmployee,
+  updateProject,
 })(Index);
 
 const Project = (props) => {
@@ -170,9 +178,9 @@ const Project = (props) => {
     }
   });
 
-  if (project.notes == "") {
-    project.notes = "No notes for project.";
-  }
+  // if (project.notes == "") {
+  //   project.notes = "No notes for project.";
+  // }
 
   // if theres only 1 employee returns "and 'employee'"
   // const last = assignedEmployees.pop();
@@ -195,7 +203,11 @@ const Project = (props) => {
         target={`popover${project.id}`}
       >
         <PopoverHeader>{project.name} Notes</PopoverHeader>
-        <PopoverBody>{project.notes}</PopoverBody>
+        <PopoverBody>
+          {/* <li>Cool list of notes</li>
+          <br /> */}
+          <NoteEditor notes={project} updateProject={props.updateProject} />
+        </PopoverBody>
       </UncontrolledPopover>
       <td>
         <Link to={`projects/${project.id}/edit`}>
@@ -212,6 +224,44 @@ const Project = (props) => {
         </Button>
       </td>
     </tr>
+  );
+};
+
+const NoteEditor = (props) => {
+  const handleSubmit = (values) => {
+    const req = props.updateProject(values);
+    req.then(() => {
+      //close popover? or recall the list of notes to show the added one
+    });
+  };
+
+  const { notes } = props;
+
+  return (
+    <Form component={NoteForm} onSubmit={handleSubmit} initialValues={notes} />
+  );
+};
+
+const NoteForm = (props) => {
+  return (
+    <>
+      <Field
+        component={TextareaField}
+        name="notes"
+        type="textarea"
+        rows="4"
+        label="Project Notes..."
+      />
+      <br />
+      <Button
+        color="success"
+        size="sm"
+        type="submit"
+        onClick={props.handleSubmit}
+      >
+        Add Note +
+      </Button>
+    </>
   );
 };
 

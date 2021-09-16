@@ -35,6 +35,10 @@ class ProjectsController < ApplicationController
     project_params = params[:project].permit(:name, :notes)
     supervisor_params = params[:project].permit(site_supervisors: [:employee_id, :id])
 
+    if project_params["notes"].nil? 
+      project_params["notes"] = ""
+    end
+
     @project = Project.find(params[:id])
     
     current_ss = @project.site_supervisors.map{|ss| ss.employee_id}
