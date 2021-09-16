@@ -37,9 +37,9 @@ function ProjectForm(props) {
   const { employees, projects, values } = props;
 
   let site_supervisors_selected = [];
-  if (!_.isEmpty(values?.site_supervisors)) {
+  if (!_.isEmpty(values?.site_supervisors_attributes)) {
     site_supervisors_selected = _.map(
-      values.site_supervisors,
+      values.site_supervisors_attributes,
       (ss) => ss.employee_id
     );
   }
@@ -80,7 +80,7 @@ function ProjectForm(props) {
         <br />
         <h3>Site Supervisors</h3>
         <FieldArray
-          name="site_supervisors"
+          name="site_supervisors_attributes"
           component={SiteSupervisorsAttributes}
           employees={employees}
           site_supervisors_selected={site_supervisors_selected}
@@ -103,19 +103,36 @@ function SiteSupervisorsAttributes(props) {
   const { fields, employees, defaultOptions, site_supervisors_selected } =
     props;
 
+  const removeField = (index) => {
+    const thisField = fields?.value[index];
+
+    if (thisField.id) {
+      fields.push({ id: thisField.id, _destroy: "1" });
+      fields.remove(index);
+    } else {
+      fields.remove(index);
+    }
+  };
+
   return (
     <div>
-      {fields.map((name, index) => (
-        <SiteSupervisorsFields
-          key={index}
-          index={index}
-          fields={fields}
-          name={name}
-          employees={employees}
-          defaultOptions={defaultOptions}
-          site_supervisors_selected={site_supervisors_selected}
-        />
-      ))}
+      {fields.map((name, index) => {
+        const thisField = fields?.value[index];
+        if (!thisField._destroy) {
+          return (
+            <SiteSupervisorsFields
+              key={index}
+              index={index}
+              fields={fields}
+              name={name}
+              employees={employees}
+              defaultOptions={defaultOptions}
+              removeField={removeField}
+              site_supervisors_selected={site_supervisors_selected}
+            />
+          );
+        }
+      })}
       <br />
       <Button type="button" onClick={() => fields.push({})}>
         Add New Site Supervisor +
@@ -132,6 +149,7 @@ function SiteSupervisorsFields(props) {
     defaultOptions,
     name,
     site_supervisors_selected,
+    removeField,
   } = props;
 
   const thisField = fields?.value[index];
@@ -165,11 +183,7 @@ function SiteSupervisorsFields(props) {
         />
       </Col>
       <Col>
-        <Button
-          type="button"
-          color="danger"
-          onClick={() => fields.remove(index)}
-        >
+        <Button type="button" color="danger" onClick={() => removeField(index)}>
           Remove
         </Button>
       </Col>

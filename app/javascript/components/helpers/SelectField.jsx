@@ -10,7 +10,7 @@ export default function SelectField(props) {
   //   (o) => o.value !== props?.formValues?.employee_id
   // );
 
-  const defaultValue = options.find((o) => o.value == input.value);
+  const value = options.find((o) => o.value == input.value);
 
   const customOnChange = (objectFromReactSelect) => {
     const newValue = objectFromReactSelect.value;
@@ -28,7 +28,7 @@ export default function SelectField(props) {
           invalid={meta.touched && meta.invalid}
           onChange={customOnChange}
           options={options}
-          value={defaultValue}
+          value={value}
         />
       </FormGroup>
     </div>

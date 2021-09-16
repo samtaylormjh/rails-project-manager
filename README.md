@@ -11,11 +11,3 @@
 - Notes as an array, remove from the edit page and display a list of notes above the note form
 
 - Testing
-
-# Reducer stuff
-
-- Attempting to expand an employees projects after creating a new employee causes the expanded table to appear blank
-
-- Editing site supervisors broke once then started working and now i can't replicate it
-
-- After creating a new employee only the new employee is displayed on index until refreshed sometimes?

@@ -1934,6 +1934,11 @@ array-flatten@^2.1.0:
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-2.1.2.tgz#24ef80a28c1a893617e2149b0c6d0d788293b099"
   integrity sha512-hNfzcOV8W4NdualtqBFPyVO+54DSJuZGY9qT4pRroB6S9e3iiido2ISIC5h9R2sPJ8H3FHCIiEnsv1lPXO3KtQ==
 
+array-to-sentence@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/array-to-sentence/-/array-to-sentence-2.0.0.tgz#1e57691fdc18ba24a47e3ebabda9324baac960b4"
+  integrity sha512-rflEVg2oIxO0XgL5erRPr8GlInIORqIXrep6+b9RyrvztFcrawqIOxbWR5hYy1v7KzNvTWsSdHe8D9/XZ/rbMw==
+
 array-union@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/array-union/-/array-union-1.0.2.tgz#9a34410e4f4e3da23dea375be5be70f24778ec39"
