@@ -56,7 +56,7 @@ export default function EmployeeForm(props) {
         <br />
         <h3>Emergency Contact</h3>
         <FieldArray
-          name="emergency_contacts"
+          name="emergency_contacts_attributes"
           component={EmergencyContactAttributes}
           change={change}
         />

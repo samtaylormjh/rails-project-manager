@@ -6,18 +6,10 @@ class EmployeesController < ApplicationController
   end
 
   def create
-    employee_params = params[:employee].permit(:fname, :lname)
-    emergency_contact_params = params[:employee].permit(emergency_contacts: [:fname, :lname, :number, :primary])
-    
-    @employee = Employee.create(employee_params)
-
-    if emergency_contact_params.present?
-      emergency_contact_params["emergency_contacts"].each do |ec|
-        @employee.emergency_contacts.create(ec)
-      end
+    @employee = Employee.new(employee_params)
+    if @employee.save
+      render :show
     end
-    
-    render :show
   end
 
   def destroy
@@ -29,38 +21,15 @@ class EmployeesController < ApplicationController
 
   def update
     @employee = Employee.find(params[:id])
-    emergency_contact_params = params[:employee].permit(emergency_contacts: [:id, :fname, :lname, :number, :primary])
-    
-    current_ec = @employee.emergency_contacts.map{|ec| ec.id}
-    updated_ec = emergency_contact_params["emergency_contacts"].map{|ec|ec["id"]}
-
     if @employee.update(employee_params)
-      ec_to_delete = current_ec - updated_ec
-      ec_to_delete.each do |ec|
-        if ec.present?
-          @employee.emergency_contacts.find_by(id:ec).destroy
-        end
-      end
-
-    @employee = Employee.find(params[:id])      
-      
-      if emergency_contact_params.present?
-        emergency_contact_params["emergency_contacts"].each do |ec| 
-          if ec["id"].present? 
-            find_ec = @employee.emergency_contacts.find(ec["id"])
-            find_ec.update(ec.except("id"))
-          else
-            @employee.emergency_contacts.create(ec)
-          end
-        end
-      end
-      
       render :show
+    else
+      render json: @employee.errors, status: :unprocessable_entity
     end
   end
 
   private
     def employee_params
-      params.require(:employee).permit(:fname, :lname)
+      params.require(:employee).permit(:fname, :lname, emergency_contacts_attributes: [:id, :fname, :lname, :number, :primary])
     end
 end

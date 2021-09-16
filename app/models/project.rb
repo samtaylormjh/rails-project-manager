@@ -4,6 +4,4 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :site_supervisors, allow_destroy: true
 
   validates :name, :uniqueness => true
-
-
 end

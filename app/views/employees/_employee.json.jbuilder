@@ -5,7 +5,7 @@ json.display_name employee.display_name
 
 json.projects employee.projects
 
-json.emergency_contacts employee.emergency_contacts.each do |ec|
+json.emergency_contacts_attributes employee.emergency_contacts.each do |ec|
   json.id ec.id
   json.employee_id ec.employee_id
   json.fname ec.fname
