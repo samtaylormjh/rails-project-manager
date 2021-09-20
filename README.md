@@ -1,9 +1,9 @@
 # To Fix
 
+- First ICE not being ticked primary by default
+
 # To Add
 
-- First ICE ticked primary by default
+- Another has_many to employees
 
-- Notes as an array, remove from the edit page and display a list of notes above the note form
-
-- Testing
+- (maybe?) Notes as an array, display a list of notes above the note form that updates as each note is added
