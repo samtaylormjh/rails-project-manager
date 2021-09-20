@@ -80,17 +80,36 @@ function EmergencyContactAttributes(props) {
     });
   };
 
+  const removeField = (index) => {
+    const thisField = fields?.value[index];
+
+    if (thisField.id) {
+      fields.push({ id: thisField.id, _destroy: "1" });
+      fields.remove(index);
+    } else {
+      fields.remove(index);
+    }
+  };
+
+  console.log(fields.value);
+
   return (
     <div>
-      {fields.map((name, index) => (
-        <EmergencyContactFields
-          key={index}
-          index={index}
-          fields={fields}
-          name={name}
-          uncheckAll={uncheckAll}
-        />
-      ))}
+      {fields.map((name, index) => {
+        const thisField = fields?.value[index];
+        if (!thisField._destroy) {
+          return (
+            <EmergencyContactFields
+              key={index}
+              index={index}
+              fields={fields}
+              name={name}
+              uncheckAll={uncheckAll}
+              removeField={removeField}
+            />
+          );
+        }
+      })}
       <br />
       <Button type="button" onClick={() => fields.push({})}>
         New Emergency Contact +
@@ -100,7 +119,7 @@ function EmergencyContactAttributes(props) {
 }
 
 function EmergencyContactFields(props) {
-  const { fields, index, name } = props;
+  const { fields, index, name, removeField } = props;
 
   const thisField = fields.value[index];
 
@@ -152,11 +171,7 @@ function EmergencyContactFields(props) {
         </Row>
       </Col>
       <Col>
-        <Button
-          type="button"
-          color="danger"
-          onClick={() => fields.remove(index)}
-        >
+        <Button type="button" color="danger" onClick={() => removeField(index)}>
           Remove
         </Button>
       </Col>

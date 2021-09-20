@@ -30,6 +30,6 @@ class ProjectsController < ApplicationController
 
   private
     def project_params
-      params.require(:project).permit(:name,:notes,site_supervisors_attributes: [:id,:employee_id,:_destroy,:days_working_attributes => [:id]])
+      params.require(:project).permit(:name,:notes,site_supervisors_attributes: [:id,:employee_id,:_destroy])
     end
 end
