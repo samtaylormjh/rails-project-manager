@@ -107,7 +107,6 @@ function SiteSupervisorsAttributes(props) {
     const thisField = fields?.value[index];
 
     if (thisField.id) {
-      console.log(thisField);
       fields.push({ id: thisField.id, _destroy: "1" });
       fields.remove(index);
     } else {

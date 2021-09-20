@@ -91,8 +91,6 @@ function EmergencyContactAttributes(props) {
     }
   };
 
-  console.log(fields.value);
-
   return (
     <div>
       {fields.map((name, index) => {
