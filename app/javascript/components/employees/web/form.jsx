@@ -24,33 +24,35 @@ export default function EmployeeForm(props) {
       <Container>
         <h3>Employee</h3>
         <br />
-        <FormGroup row>
-          <Label for="fname" sm={2}>
-            First Name
-          </Label>
-          <Col sm={3}>
-            <Field
-              component={InputField}
-              name="fname"
-              label="First Name"
-              validate={composeValidators(required)}
-            />
-          </Col>
-        </FormGroup>
-        <br />
-        <FormGroup row>
-          <Label for="lname" sm={2}>
-            Last Name
-          </Label>
-          <Col sm={3}>
-            <Field
-              component={InputField}
-              name="lname"
-              label="Last Name"
-              validate={composeValidators(required)}
-            />
-          </Col>
-        </FormGroup>
+        <form>
+          <FormGroup row>
+            <Label for="fname" sm={2}>
+              First Name
+            </Label>
+            <Col sm={3}>
+              <Field
+                component={InputField}
+                name="fname"
+                label="First Name"
+                validate={composeValidators(required)}
+              />
+            </Col>
+          </FormGroup>
+          <br />
+          <FormGroup row>
+            <Label for="lname" sm={2}>
+              Last Name
+            </Label>
+            <Col sm={3}>
+              <Field
+                component={InputField}
+                name="lname"
+                label="Last Name"
+                validate={composeValidators(required)}
+              />
+            </Col>
+          </FormGroup>
+        </form>
         <br />
         <hr style={{ height: 5 }} />
         <br />
