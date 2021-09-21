@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { Field } from "react-final-form";
 import { FieldArray } from "react-final-form-arrays";
 import { Container, FormGroup, Label, Col, Button, Row } from "reactstrap";
 import { CheckboxField, InputField } from "../../helpers";
+import { getProjects } from "../../projects/web/actions";
+import { getEmployees } from "../../employees/web/actions";
 
 const required = (value) => (value ? undefined : "Required");
 
@@ -14,10 +17,26 @@ const composeValidators =
       undefined
     );
 
-export default function EmployeeForm(props) {
+function mapStateToProps(state) {
+  return { projects: state.projects, employees: state.employees };
+}
+
+function EmployeeForm(props) {
   const {
     form: { change },
   } = props;
+
+  useEffect(() => {
+    if (props.projects.length === 0) {
+      props.getProjects();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (props.employees.length === 0) {
+      props.getEmployees();
+    }
+  }, []);
 
   return (
     <div>
@@ -57,6 +76,7 @@ export default function EmployeeForm(props) {
         <hr style={{ height: 5 }} />
         <br />
         <h3>Emergency Contact</h3>
+        <br />
         <FieldArray
           name="emergency_contacts_attributes"
           component={EmergencyContactAttributes}
@@ -70,6 +90,11 @@ export default function EmployeeForm(props) {
     </div>
   );
 }
+
+export default connect(mapStateToProps, {
+  getProjects,
+  getEmployees,
+})(EmployeeForm);
 
 function EmergencyContactAttributes(props) {
   const { fields, change } = props;
@@ -110,7 +135,6 @@ function EmergencyContactAttributes(props) {
           );
         }
       })}
-      <br />
       <Button type="button" onClick={() => fields.push({})}>
         New Emergency Contact +
       </Button>
@@ -128,6 +152,16 @@ function EmergencyContactFields(props) {
       props.uncheckAll(name);
     }
   }, [thisField.primary]);
+
+  console.log(fields);
+
+  // useEffect(() => {
+  //   if (fields.value[0] == {}) {
+  //     fields.value[0] = {
+  //       primary: true,
+  //     };
+  //   }
+  // }, []);
 
   return (
     <FormGroup row key={index} className="mb-2">

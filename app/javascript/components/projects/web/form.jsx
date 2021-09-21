@@ -62,25 +62,13 @@ function ProjectForm(props) {
                 validate={composeValidators(required)}
               />
             </Col>
-            {/* <Col sm={1}></Col>
-          <Label for="notes" sm={1}>
-            Notes
-          </Label>
-          <Col sm={4}>
-            <Field
-              component={TextareaField}
-              name="notes"
-              type="textarea"
-              rows="4"
-              label="Project Notes..."
-            />
-          </Col> */}
           </FormGroup>
         </form>
         <br />
         <hr style={{ height: 5 }} />
         <br />
         <h3>Site Supervisors</h3>
+        <br />
         <FieldArray
           name="site_supervisors_attributes"
           component={SiteSupervisorsAttributes}

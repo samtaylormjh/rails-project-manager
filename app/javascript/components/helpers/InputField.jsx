@@ -8,8 +8,8 @@ export default function InputField(props) {
     <div>
       <FormGroup>
         <Input
-          valid={meta.modified && meta.valid}
-          invalid={meta.modified && meta.invalid}
+          valid={(meta.modified || meta.touched) && meta.valid}
+          invalid={(meta.modified || meta.touched) && meta.invalid}
           {...input}
           placeholder={props.label}
         />
