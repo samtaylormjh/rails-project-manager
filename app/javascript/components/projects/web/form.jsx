@@ -49,19 +49,20 @@ function ProjectForm(props) {
       <Container>
         <h3>Project</h3>
         <br />
-        <FormGroup row>
-          <Label for="name" sm={2}>
-            Name
-          </Label>
-          <Col sm={3}>
-            <Field
-              component={InputField}
-              name="name"
-              label="Project Name"
-              validate={composeValidators(required)}
-            />
-          </Col>
-          {/* <Col sm={1}></Col>
+        <form>
+          <FormGroup row>
+            <Label for="name" sm={2}>
+              Name
+            </Label>
+            <Col sm={3}>
+              <Field
+                component={InputField}
+                name="name"
+                label="Project Name"
+                validate={composeValidators(required)}
+              />
+            </Col>
+            {/* <Col sm={1}></Col>
           <Label for="notes" sm={1}>
             Notes
           </Label>
@@ -74,7 +75,8 @@ function ProjectForm(props) {
               label="Project Notes..."
             />
           </Col> */}
-        </FormGroup>
+          </FormGroup>
+        </form>
         <br />
         <hr style={{ height: 5 }} />
         <br />

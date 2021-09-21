@@ -1,12 +1,10 @@
 // makes a pdf of the page
 // await page.pdf({ path: "page.pdf" });
 
-describe("Employees test", () => {
+describe("Employees tests", () => {
   beforeEach(async () => {
     // page.on("console", (consoleObj) => console.log(consoleObj.text()));
   });
-
-  // EMPLOYEE TESTS
 
   it("Checks that the new employee button routes to employees/new", async () => {
     await page.goto("http://localhost:3000/?tab=1");
@@ -151,5 +149,5 @@ describe("Employees test", () => {
     expect(deletedTbodyLength).toEqual(tbodyLength);
   });
 
-  // PROJECT TESTS
+  // test emergency contacts, removing and updating
 });
