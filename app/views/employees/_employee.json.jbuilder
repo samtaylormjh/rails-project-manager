@@ -13,3 +13,9 @@ json.emergency_contacts_attributes employee.emergency_contacts.each do |ec|
   json.number ec.number
   json.primary ec.primary
 end
+
+json.apprentices_attributes employee.apprentices.each do |a|
+  json.id a.id
+  json.employee_id a.employee_id
+  json.apprentice_id a.apprentice_id
+end

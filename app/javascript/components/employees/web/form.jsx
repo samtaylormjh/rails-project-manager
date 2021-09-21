@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Field } from "react-final-form";
 import { FieldArray } from "react-final-form-arrays";
 import { Container, FormGroup, Label, Col, Button, Row } from "reactstrap";
-import { CheckboxField, InputField } from "../../helpers";
+import { CheckboxField, InputField, SelectField } from "../../helpers";
 import { getProjects } from "../../projects/web/actions";
 import { getEmployees } from "../../employees/web/actions";
 
@@ -26,6 +26,8 @@ function EmployeeForm(props) {
     form: { change },
   } = props;
 
+  const { employees, values } = props;
+
   useEffect(() => {
     if (props.projects.length === 0) {
       props.getProjects();
@@ -37,6 +39,14 @@ function EmployeeForm(props) {
       props.getEmployees();
     }
   }, []);
+
+  let apprentices_selected = [];
+  if (!_.isEmpty(values?.apprentices_attributes)) {
+    apprentices_selected = _.map(
+      values.apprentices_attributes,
+      (a) => a.employee_id
+    );
+  }
 
   return (
     <div>
@@ -68,6 +78,20 @@ function EmployeeForm(props) {
                 name="lname"
                 label="Last Name"
                 validate={composeValidators(required)}
+              />
+            </Col>
+          </FormGroup>
+          <br />
+          <FormGroup row>
+            <Label for="apprentice" sm={2}>
+              Apprentices
+            </Label>
+            <Col sm={3}>
+              <FieldArray
+                name="apprentices_attributes"
+                component={ApprenticesAttributes}
+                employees={employees}
+                apprentices_selected={apprentices_selected}
               />
             </Col>
           </FormGroup>
@@ -153,16 +177,6 @@ function EmergencyContactFields(props) {
     }
   }, [thisField.primary]);
 
-  console.log(fields);
-
-  // useEffect(() => {
-  //   if (fields.value[0] == {}) {
-  //     fields.value[0] = {
-  //       primary: true,
-  //     };
-  //   }
-  // }, []);
-
   return (
     <FormGroup row key={index} className="mb-2">
       <Col sm={3}>
@@ -203,6 +217,92 @@ function EmergencyContactFields(props) {
             />
           </Col>
         </Row>
+      </Col>
+      <Col>
+        <Button type="button" color="danger" onClick={() => removeField(index)}>
+          Remove
+        </Button>
+      </Col>
+    </FormGroup>
+  );
+}
+
+function ApprenticesAttributes(props) {
+  const { fields, employees, defaultOptions, apprentices_selected } = props;
+  const removeField = (index) => {
+    const thisField = fields?.value[index];
+
+    if (thisField.id) {
+      fields.push({ id: thisField.id, _destroy: "1" });
+      fields.remove(index);
+    } else {
+      fields.remove(index);
+    }
+  };
+
+  return (
+    <div>
+      {fields.map((name, index) => {
+        const thisField = fields?.value[index];
+        if (!thisField._destroy) {
+          return (
+            <ApprenticeFields
+              key={index}
+              index={index}
+              fields={fields}
+              name={name}
+              employees={employees}
+              removeField={removeField}
+              apprentices_selected={apprentices_selected}
+            />
+          );
+        }
+      })}
+      <br />
+      <Button type="button" onClick={() => fields.push({})}>
+        Assign Apprentice +
+      </Button>
+    </div>
+  );
+}
+
+function ApprenticeFields(props) {
+  const {
+    fields,
+    index,
+    employees,
+    defaultOptions,
+    name,
+    apprentices_selected,
+    removeField,
+  } = props;
+
+  const thisField = fields?.value[index];
+
+  const options = _.map(employees, (e) => {
+    return { label: e.display_name, value: e.id };
+  });
+
+  let filteredOptions = _.clone(options);
+  if (!_.isEmpty(apprentices_selected)) {
+    filteredOptions = _.filter(
+      options,
+      (o) =>
+        !apprentices_selected.includes(o.value) ||
+        o.value == thisField.employee_id
+    );
+  }
+  return (
+    <FormGroup row key={index} className="mb-2">
+      <Col sm={6}>
+        <Field
+          component={SelectField}
+          name={`${name}.employee_id`}
+          label="Employees"
+          options={filteredOptions}
+          defaultOptions={defaultOptions}
+          validate={composeValidators(required)}
+        />
       </Col>
       <Col>
         <Button type="button" color="danger" onClick={() => removeField(index)}>

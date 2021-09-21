@@ -30,6 +30,6 @@ class EmployeesController < ApplicationController
 
   private
     def employee_params
-      params.require(:employee).permit(:fname, :lname, emergency_contacts_attributes: [:id, :fname, :lname, :number, :primary, :_destroy])
+      params.require(:employee).permit(:fname, :lname, emergency_contacts_attributes: [:id, :fname, :lname, :number, :primary, :_destroy], apprentices_attributes: [:id, :employee_id, :apprentice_id, :_destroy])
     end
 end
