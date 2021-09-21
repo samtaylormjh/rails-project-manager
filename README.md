@@ -2,8 +2,10 @@
 
 - First ICE not being ticked primary by default
 
+- Employees can assign themselves as appretices, apprentices can be doubled up between employees
+
 # To Add
 
-- Another has_many to employees
+- Tab for apprentices on index
 
 - (maybe?) Notes as an array, display a list of notes above the note form that updates as each note is added
