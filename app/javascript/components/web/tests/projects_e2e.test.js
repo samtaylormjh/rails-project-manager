@@ -147,4 +147,6 @@ describe("Projects tests", () => {
     );
     expect(deletedTbodyLength).toEqual(tbodyLength);
   });
+
+  // test notes, adding/editing/removing site supervisors
 });
