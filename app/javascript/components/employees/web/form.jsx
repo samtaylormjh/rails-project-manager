@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import { Field } from "react-final-form";
 import { FieldArray } from "react-final-form-arrays";
 import { Container, FormGroup, Label, Col, Button, Row } from "reactstrap";
-import { InputField, SelectField } from "../../helpers";
+import { InputField } from "../../helpers";
 import { getProjects } from "../../projects/web/actions";
 import { getEmployees } from "../../employees/web/actions";
 import EmergencyContactAttributes from "./emergency_contacts";
 import ApprenticesAttributes from "./apprentices";
+import _ from "lodash";
 
 const required = (value) => (value ? undefined : "Required");
 
@@ -48,6 +49,13 @@ function EmployeeForm(props) {
       values.apprentices_attributes,
       (a) => a.apprentice_id
     );
+  }
+  const apprenticeList = _.map(employees, (e) =>
+    _.map(e.apprentices_attributes, (aa) => aa.apprentice_id)
+  );
+  _.map(apprenticeList.flat(), (a) => apprentices_selected.push(a));
+  if (!apprentices_selected.includes(values.id)) {
+    apprentices_selected.push(values.id);
   }
 
   return (

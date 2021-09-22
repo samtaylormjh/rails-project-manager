@@ -2,8 +2,6 @@
 
 - First ICE not being ticked primary by default
 
-- Employees can assign themselves as appretices, apprentices can be doubled up between employees
-
 # To Add
 
 - Tab for apprentices on index
