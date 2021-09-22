@@ -1,7 +1,7 @@
 import React from "react";
 import { Field } from "react-final-form";
 import { FormGroup, Col, Button } from "reactstrap";
-import { SelectField } from "../../helpers";
+import { SelectField } from "../../../helpers";
 
 const required = (value) => (value ? undefined : "Required");
 
@@ -10,7 +10,6 @@ export default function ApprenticesAttributes(props) {
     fields,
     fields: { value },
     employees,
-    defaultOptions,
     apprentices_selected,
     composeValidators,
   } = props;

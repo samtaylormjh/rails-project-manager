@@ -23,6 +23,7 @@ import {
   Col,
   Table,
 } from "reactstrap";
+import Apprentices from "../employees/web/apprentices/index";
 
 function mapStateToProps(state) {
   return { projects: state.projects, employees: state.employees };
@@ -46,6 +47,8 @@ function Index(props) {
     initialState = "2";
   } else if (props.location.search === "?tab=1") {
     initialState = "1";
+  } else if (props.location.search === "?tab=3") {
+    initialState = "3";
   }
 
   const [activeTab, setActiveTab] = useState(initialState);
@@ -80,6 +83,18 @@ function Index(props) {
             }}
           >
             Projects
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === "3" })}
+            onClick={() => {
+              toggle("3");
+              props.history.push("/?tab=3");
+              props.getProjects();
+            }}
+          >
+            Apprentices
           </NavLink>
         </NavItem>
       </Nav>
@@ -146,6 +161,30 @@ function Index(props) {
                       employees={props.employees}
                       deleteProject={props.deleteProject}
                       updateProject={props.updateProject}
+                    />
+                  ))}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        </TabPane>
+        <TabPane tabId="3">
+          <Row>
+            <Col sm="10">
+              <br />
+              <Table hover size="sm" style={{ tableLayout: "fixed" }}>
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Apprentices</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {_.map(props.employees, (employee) => (
+                    <Apprentices
+                      key={employee.id}
+                      employee={employee}
+                      employees={props.employees}
                     />
                   ))}
                 </tbody>

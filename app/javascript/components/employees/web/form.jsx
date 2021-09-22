@@ -7,7 +7,7 @@ import { InputField } from "../../helpers";
 import { getProjects } from "../../projects/web/actions";
 import { getEmployees } from "../../employees/web/actions";
 import EmergencyContactAttributes from "./emergency_contacts";
-import ApprenticesAttributes from "./apprentices";
+import ApprenticesAttributes from "./apprentices/apprentices";
 import _ from "lodash";
 
 const required = (value) => (value ? undefined : "Required");

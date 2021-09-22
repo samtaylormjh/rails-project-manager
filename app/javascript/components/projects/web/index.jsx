@@ -13,15 +13,12 @@ import arrayToSentence from "array-to-sentence";
 export default function Project(props) {
   const { project, employees } = props;
 
-  const assignedEmployees = _.map(
-    project.site_supervisors_attributes,
-    (ss, i) => {
-      const findSupervisors = _.find(employees, (e) => e.id == ss.employee_id);
-      if (findSupervisors) {
-        return `${findSupervisors.fname} ${findSupervisors.lname}`;
-      }
+  const assignedEmployees = _.map(project.site_supervisors_attributes, (ss) => {
+    const findSupervisors = _.find(employees, (e) => e.id == ss.employee_id);
+    if (findSupervisors) {
+      return `${findSupervisors.fname} ${findSupervisors.lname}`;
     }
-  );
+  });
 
   return (
     <tr>
