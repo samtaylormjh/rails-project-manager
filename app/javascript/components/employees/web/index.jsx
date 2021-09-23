@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getEmployees, deleteEmployee } from "./actions";
-import EmployeeAttributes from "./form/employee_attributes";
 import _ from "lodash";
-import { Button, Row, Col, Table } from "reactstrap";
+import { Button, Row, Col, Table, Tooltip } from "reactstrap";
 
 function mapStateToProps(state) {
   return { employees: state.employees };
@@ -39,7 +38,7 @@ function EmployeeIndex(props) {
           </thead>
           <tbody>
             {_.map(props.employees, (employee) => (
-              <EmployeeAttributes
+              <EmployeeRow
                 key={employee.id}
                 employee={employee}
                 deleteEmployee={props.deleteEmployee}
@@ -52,6 +51,106 @@ function EmployeeIndex(props) {
     </Row>
   );
 }
+
+function EmployeeRow(props) {
+  const { employee, projects } = props;
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
+
+  const disableDelete = !_.isEmpty(employee.projects);
+
+  return (
+    <>
+      <tr>
+        <td onClick={toggle} style={{ cursor: "pointer" }}>
+          {isOpen ? "-" : "+"}
+        </td>
+        <td>{employee.id}</td>
+        <td>{employee.fname}</td>
+        <td>{employee.lname}</td>
+        <td>
+          <Link to={`employees/${employee.id}/edit`}>
+            <Button size="sm">Edit</Button>
+          </Link>{" "}
+          <DeleteButton
+            disableDelete={disableDelete}
+            employee={employee}
+            deleteEmployee={props.deleteEmployee}
+          />
+        </td>
+      </tr>
+      {isOpen && (
+        <>
+          <tr>
+            <th></th>
+            <th>Project ID</th>
+            <th>Project Name</th>
+          </tr>
+          {_.map(employee.projects, (emp) => {
+            const assignedProject = _.find(
+              projects,
+              (p) => p.id == emp?.project_id
+            );
+            return (
+              <tr key={emp?.project_id}>
+                <td></td>
+                <td>{emp?.project_id}</td>
+                <td>{assignedProject?.name}</td>
+              </tr>
+            );
+          })}
+        </>
+      )}
+    </>
+  );
+}
+
+const DeleteButton = (props) => {
+  const { disableDelete, employee, deleteEmployee } = props;
+
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const toggle = () => setTooltipOpen(!tooltipOpen);
+
+  if (disableDelete) {
+    return (
+      <>
+        <Button
+          color="danger"
+          size="sm"
+          id={"DisabledButton-" + employee.id}
+          onClick={() => {
+            deleteEmployee(employee.id);
+          }}
+          disabled
+        >
+          Delete
+        </Button>
+        <Tooltip
+          placement="right"
+          isOpen={tooltipOpen}
+          target={"DisabledButton-" + employee.id}
+          toggle={toggle}
+        >
+          Employee is a site supervisor
+        </Tooltip>
+      </>
+    );
+  } else {
+    return (
+      <Button
+        color="danger"
+        size="sm"
+        onClick={() => {
+          deleteEmployee(employee.id);
+        }}
+      >
+        Delete
+      </Button>
+    );
+  }
+};
 
 export default connect(mapStateToProps, {
   getEmployees,

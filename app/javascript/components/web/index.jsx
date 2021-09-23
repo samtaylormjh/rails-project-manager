@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ProjectIndex from "../projects/web/";
 import EmployeeIndex from "../employees/web/";
-import ApprenticeIndex from "../employees/web/apprentices";
+import ApprenticeIndex from "../apprentices/web";
 import _ from "lodash";
 import classnames from "classnames";
 import {

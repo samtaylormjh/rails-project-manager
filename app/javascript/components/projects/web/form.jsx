@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Field } from "react-final-form";
 import { FieldArray } from "react-final-form-arrays";
 import { Container, FormGroup, Label, Col, Button } from "reactstrap";
-import { InputField, SelectField, TextareaField } from "../../helpers";
+import { InputField, SelectField } from "../../helpers";
 import { connect } from "react-redux";
 import { getEmployees } from "components/employees/web/actions";
 import { getProjects } from "./actions";
@@ -34,7 +34,7 @@ function ProjectForm(props) {
     }
   }, []);
 
-  const { employees, projects, values } = props;
+  const { employees, values } = props;
 
   let site_supervisors_selected = [];
   if (!_.isEmpty(values?.site_supervisors_attributes)) {

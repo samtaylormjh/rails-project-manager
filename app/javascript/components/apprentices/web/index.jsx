@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { getEmployees } from "../actions";
+import { getEmployees } from "components/employees/web/actions";
 import _ from "lodash";
 import { Row, Col, Table } from "reactstrap";
 
@@ -28,7 +28,7 @@ function ApprenticeIndex(props) {
           </thead>
           <tbody>
             {_.map(props.employees, (employee) => (
-              <tr>
+              <tr key={employee.id}>
                 <td>{employee.display_name}</td>
                 <td>{employee.list_of_apprentices}</td>
               </tr>

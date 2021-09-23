@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProjects, deleteProject, updateProject } from "./actions";
 import { getEmployees } from "../../employees/web/actions";
-import ProjectAttributes from "./form/project_attributes";
+import ProjectRow from "./index/project_row";
 import _ from "lodash";
 import { Button, Row, Col, Table } from "reactstrap";
 
@@ -40,7 +40,7 @@ function ProjectIndex(props) {
           </thead>
           <tbody>
             {_.map(props.projects, (project) => (
-              <ProjectAttributes
+              <ProjectRow
                 key={project.id}
                 project={project}
                 employees={props.employees}
