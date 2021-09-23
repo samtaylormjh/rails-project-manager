@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getEmployees, deleteEmployee } from "./actions";
 import EmployeeAttributes from "./form/employee_attributes";
 import _ from "lodash";
-import classnames from "classnames";
 import { Button, Row, Col, Table } from "reactstrap";
 
 function mapStateToProps(state) {

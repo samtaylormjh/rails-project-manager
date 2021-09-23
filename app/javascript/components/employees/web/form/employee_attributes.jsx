@@ -24,6 +24,11 @@ export default function EmployeeAttributes(props) {
           <Link to={`employees/${employee.id}/edit`}>
             <Button size="sm">Edit</Button>
           </Link>{" "}
+          <DeleteButton
+            disableDelete={disableDelete}
+            employee={employee}
+            deleteEmployee={props.deleteEmployee}
+          />
         </td>
       </tr>
       {isOpen && (
@@ -51,3 +56,48 @@ export default function EmployeeAttributes(props) {
     </>
   );
 }
+
+const DeleteButton = (props) => {
+  const { disableDelete, employee, deleteEmployee } = props;
+
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const toggle = () => setTooltipOpen(!tooltipOpen);
+
+  if (disableDelete) {
+    return (
+      <>
+        <Button
+          color="danger"
+          size="sm"
+          id={"DisabledButton-" + employee.id}
+          onClick={() => {
+            deleteEmployee(employee.id);
+          }}
+          disabled
+        >
+          Delete
+        </Button>
+        <Tooltip
+          placement="right"
+          isOpen={tooltipOpen}
+          target={"DisabledButton-" + employee.id}
+          toggle={toggle}
+        >
+          Employee is a site supervisor
+        </Tooltip>
+      </>
+    );
+  } else {
+    return (
+      <Button
+        color="danger"
+        size="sm"
+        onClick={() => {
+          deleteEmployee(employee.id);
+        }}
+      >
+        Delete
+      </Button>
+    );
+  }
+};
