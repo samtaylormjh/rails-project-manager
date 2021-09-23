@@ -3,8 +3,6 @@ import { Field } from "react-final-form";
 import { FormGroup, Col, Button } from "reactstrap";
 import { SelectField } from "../../../helpers";
 
-const required = (value) => (value ? undefined : "Required");
-
 export default function ApprenticesAttributes(props) {
   const {
     fields,
@@ -61,7 +59,6 @@ function ApprenticeFields(props) {
     name,
     apprentices_selected,
     removeField,
-    composeValidators,
   } = props;
 
   const thisField = fields?.value[index];
@@ -71,9 +68,6 @@ function ApprenticeFields(props) {
   });
 
   let filteredOptions = _.clone(options);
-
-  // console.log(apprentices_selected);
-  // console.log(filteredOptions);
 
   if (!_.isEmpty(apprentices_selected)) {
     filteredOptions = _.filter(

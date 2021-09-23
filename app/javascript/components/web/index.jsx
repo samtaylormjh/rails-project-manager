@@ -8,7 +8,8 @@ import {
 } from "../projects/web/actions";
 import { getEmployees, deleteEmployee } from "../employees/web/actions";
 import Project from "../projects/web/index";
-import Employee from "../employees/web";
+import EmployeeAttributes from "../employees/web/form/employee_attributes";
+import EmployeeIndex from "../employees/web/index";
 import _ from "lodash";
 import classnames from "classnames";
 import {
@@ -23,8 +24,6 @@ import {
   Col,
   Table,
 } from "reactstrap";
-import Apprentices from "../employees/web/apprentices/index";
-import arrayToSentence from "array-to-sentence";
 
 function mapStateToProps(state) {
   return { projects: state.projects, employees: state.employees };
@@ -101,38 +100,7 @@ function Index(props) {
       </Nav>
       <TabContent activeTab={activeTab}>
         <TabPane tabId="1">
-          <Row>
-            <Col sm="12">
-              <br />
-              <Link to="/employees/new">
-                <Button color="primary" size="sm">
-                  New Employee +
-                </Button>
-              </Link>
-              <br />
-              <br />
-              <Table hover size="sm" style={{ tableLayout: "fixed" }}>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {_.map(props.employees, (employee) => (
-                    <Employee
-                      key={employee.id}
-                      employee={employee}
-                      deleteEmployee={props.deleteEmployee}
-                      projects={props.projects}
-                    />
-                  ))}
-                </tbody>
-              </Table>
-            </Col>
-          </Row>
+          <EmployeeIndex />
         </TabPane>
         <TabPane tabId="2">
           <Row>

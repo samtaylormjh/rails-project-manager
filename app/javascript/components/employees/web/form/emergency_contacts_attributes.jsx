@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Field } from "react-final-form";
 import { FormGroup, Label, Col, Button, Row } from "reactstrap";
-import { CheckboxField, InputField } from "../../helpers";
+import { CheckboxField, InputField } from "../../../helpers";
 
 const required = (value) => (value ? undefined : "Required");
 

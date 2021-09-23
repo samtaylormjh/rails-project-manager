@@ -1,103 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Tooltip } from "reactstrap";
+import { connect } from "react-redux";
+import { getEmployees, deleteEmployee } from "./actions";
+import EmployeeAttributes from "./form/employee_attributes";
+import _ from "lodash";
+import classnames from "classnames";
+import { Button, Row, Col, Table } from "reactstrap";
 
-export default function Employee(props) {
-  const { employee, projects } = props;
+function mapStateToProps(state) {
+  return { employees: state.employees };
+}
 
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggle = () => setIsOpen(!isOpen);
-
-  const disableDelete = !_.isEmpty(employee.projects);
+function EmployeeIndex(props) {
+  useEffect(() => {
+    if (props.employees.length === 0) {
+      props.getEmployees();
+    }
+  }, []);
 
   return (
-    <>
-      <tr>
-        <td onClick={toggle} style={{ cursor: "pointer" }}>
-          {isOpen ? "-" : "+"}
-        </td>
-        <td>{employee.id}</td>
-        <td>{employee.fname}</td>
-        <td>{employee.lname}</td>
-        <td>
-          <Link to={`employees/${employee.id}/edit`}>
-            <Button size="sm">Edit</Button>
-          </Link>{" "}
-          <ButtonTooltip
-            disableDelete={disableDelete}
-            employee={employee}
-            deleteEmployee={props.deleteEmployee}
-          />
-        </td>
-      </tr>
-      {isOpen && (
-        <>
-          <tr>
-            <th></th>
-            <th>Project ID</th>
-            <th>Project Name</th>
-          </tr>
-          {_.map(employee.projects, (emp) => {
-            const assignedProject = _.find(
-              projects,
-              (p) => p.id == emp?.project_id
-            );
-            return (
-              <tr key={emp?.project_id}>
-                <td></td>
-                <td>{emp?.project_id}</td>
-                <td>{assignedProject?.name}</td>
-              </tr>
-            );
-          })}
-        </>
-      )}
-    </>
+    <Row>
+      <Col sm="12">
+        <br />
+        <Link to="/employees/new">
+          <Button color="primary" size="sm">
+            New Employee +
+          </Button>
+        </Link>
+        <br />
+        <br />
+        <Table hover size="sm" style={{ tableLayout: "fixed" }}>
+          <thead>
+            <tr>
+              <th></th>
+              <th>ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {_.map(props.employees, (employee) => (
+              <EmployeeAttributes
+                key={employee.id}
+                employee={employee}
+                deleteEmployee={props.deleteEmployee}
+                projects={props.projects}
+              />
+            ))}
+          </tbody>
+        </Table>
+      </Col>
+    </Row>
   );
 }
 
-const ButtonTooltip = (props) => {
-  const { disableDelete, employee, deleteEmployee } = props;
-
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-  const toggle = () => setTooltipOpen(!tooltipOpen);
-
-  if (disableDelete) {
-    return (
-      <>
-        <Button
-          color="danger"
-          size="sm"
-          id={"DisabledButton-" + employee.id}
-          onClick={() => {
-            deleteEmployee(employee.id);
-          }}
-          disabled
-        >
-          Delete
-        </Button>
-        <Tooltip
-          placement="right"
-          isOpen={tooltipOpen}
-          target={"DisabledButton-" + employee.id}
-          toggle={toggle}
-        >
-          Employee is a site supervisor
-        </Tooltip>
-      </>
-    );
-  } else {
-    return (
-      <Button
-        color="danger"
-        size="sm"
-        onClick={() => {
-          deleteEmployee(employee.id);
-        }}
-      >
-        Delete
-      </Button>
-    );
-  }
-};
+export default connect(mapStateToProps, {
+  getEmployees,
+  deleteEmployee,
+})(EmployeeIndex);

@@ -6,8 +6,8 @@ import { Container, FormGroup, Label, Col, Button, Row } from "reactstrap";
 import { InputField } from "../../helpers";
 import { getProjects } from "../../projects/web/actions";
 import { getEmployees } from "../../employees/web/actions";
-import EmergencyContactAttributes from "./emergency_contacts";
-import ApprenticesAttributes from "./apprentices/apprentices";
+import EmergencyContactAttributes from "./form/emergency_contacts_attributes";
+import ApprenticesAttributes from "./form/apprentices_attributes";
 import _ from "lodash";
 
 const required = (value) => (value ? undefined : "Required");
