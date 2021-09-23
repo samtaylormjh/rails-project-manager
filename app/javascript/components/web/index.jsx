@@ -24,6 +24,7 @@ import {
   Table,
 } from "reactstrap";
 import Apprentices from "../employees/web/apprentices/index";
+import arrayToSentence from "array-to-sentence";
 
 function mapStateToProps(state) {
   return { projects: state.projects, employees: state.employees };
@@ -181,11 +182,10 @@ function Index(props) {
                 </thead>
                 <tbody>
                   {_.map(props.employees, (employee) => (
-                    <Apprentices
-                      key={employee.id}
-                      employee={employee}
-                      employees={props.employees}
-                    />
+                    <tr>
+                      <td>{employee.display_name}</td>
+                      <td>{employee.list_of_apprentices}</td>
+                    </tr>
                   ))}
                 </tbody>
               </Table>

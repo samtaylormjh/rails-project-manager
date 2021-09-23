@@ -106,22 +106,22 @@ function EmployeeForm(props) {
               />
             </Col>
           </FormGroup>
+          <br />
+          <hr style={{ height: 5 }} />
+          <br />
+          <h3>Emergency Contact</h3>
+          <br />
+          <FieldArray
+            name="emergency_contacts_attributes"
+            change={change}
+            component={EmergencyContactAttributes}
+            composeValidators={composeValidators}
+          />
+          <br />
+          <Button type="submit" color="success" onClick={props.handleSubmit}>
+            Submit
+          </Button>
         </form>
-        <br />
-        <hr style={{ height: 5 }} />
-        <br />
-        <h3>Emergency Contact</h3>
-        <br />
-        <FieldArray
-          name="emergency_contacts_attributes"
-          change={change}
-          component={EmergencyContactAttributes}
-          composeValidators={composeValidators}
-        />
-        <br />
-        <Button type="submit" color="success" onClick={props.handleSubmit}>
-          Submit
-        </Button>
       </Container>
     </div>
   );

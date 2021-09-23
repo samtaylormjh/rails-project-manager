@@ -92,7 +92,6 @@ function ApprenticeFields(props) {
           label="Employees"
           options={filteredOptions}
           defaultOptions={defaultOptions}
-          validate={composeValidators(required)}
         />
       </Col>
       <Col>

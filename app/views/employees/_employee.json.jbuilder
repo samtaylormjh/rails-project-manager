@@ -14,6 +14,15 @@ json.emergency_contacts_attributes employee.emergency_contacts.each do |ec|
   json.primary ec.primary
 end
 
+list_of_apprentices = employee.apprentices.select do |a|
+  if a.apprentice_employee.present?
+    a
+  end
+end
+
+json.list_of_apprentices list_of_apprentices.map{|a|a.apprentice_employee.display_name}.to_sentence
+
+
 json.apprentices_attributes employee.apprentices.each do |a|
   json.id a.id
   json.employee_id a.employee_id

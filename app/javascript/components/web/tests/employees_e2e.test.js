@@ -1,4 +1,3 @@
-// makes a pdf of the page
 // await page.pdf({ path: "page.pdf" });
 
 describe("Employees tests", () => {
@@ -31,7 +30,8 @@ describe("Employees tests", () => {
       fname: "new employee",
       lname: "test",
     });
-    await expect(page).toClick("button", { text: "Submit" });
+    await page.focus("[type='submit']");
+    page.keyboard.press("Enter");
     await page.waitForResponse("http://localhost:3000/employees.json");
     // Wait for table to render then compare length to previous
     await page.waitForSelector("table");
@@ -57,7 +57,8 @@ describe("Employees tests", () => {
       fname: "edit employee",
       lname: "test",
     });
-    await expect(page).toClick("button", { text: "Submit" });
+    await page.focus("[type='submit']");
+    page.keyboard.press("Enter");
     await page.waitForResponse("http://localhost:3000/employees.json");
     // Wait for table to render then compare length to previous
     await page.waitForSelector("table");
@@ -86,7 +87,8 @@ describe("Employees tests", () => {
       fname: "edit employee 1",
       lname: "test 1",
     });
-    await expect(page).toClick("button", { text: "Submit" });
+    await page.focus("[type='submit']");
+    page.keyboard.press("Enter");
     await page.waitForResponse(
       `http://localhost:3000/employees/${editId}.json`
     );
@@ -119,7 +121,8 @@ describe("Employees tests", () => {
       fname: "new employee",
       lname: "test",
     });
-    await expect(page).toClick("button", { text: "Submit" });
+    await page.focus("[type='submit']");
+    page.keyboard.press("Enter");
     await page.waitForResponse("http://localhost:3000/employees.json");
     // Wait for table to render then compare length to previous
     await page.waitForSelector("table");
@@ -149,5 +152,209 @@ describe("Employees tests", () => {
     expect(deletedTbodyLength).toEqual(tbodyLength);
   });
 
-  // test emergency contacts, removing and updating
+  it("Creates a new employee with emergency contacts and checks they carry over to the edit form", async () => {
+    await page.goto("http://localhost:3000/?tab=1");
+    await page.waitForResponse("http://localhost:3000/employees.json");
+    await page.waitForSelector("table");
+    const tbodyLength = await page.$eval("table tbody", (t) => t.rows.length);
+    await expect(page).toClick("button", { text: "New Employee +" });
+    await page.waitForSelector("form");
+    await expect(page.url()).toEqual("http://localhost:3000/employees/new");
+    await expect(page).toFillForm("form", {
+      fname: "Contacts",
+      lname: "Test",
+    });
+    await expect(page).toClick("button", { text: "New Emergency Contact +" });
+    await expect(page).toFillForm("form", {
+      "emergency_contacts_attributes[0].fname": "ICE fname",
+      "emergency_contacts_attributes[0].lname": "ICE lname",
+      "emergency_contacts_attributes[0].number": "123",
+    });
+    await page.focus("[type='submit']");
+    page.keyboard.press("Enter");
+    await page.waitForResponse("http://localhost:3000/employees.json");
+    await page.waitForSelector("table");
+    await expect(page.url()).toEqual("http://localhost:3000/?tab=1");
+    const newTbodyLength = await page.$eval(
+      "table tbody",
+      (t) => t.rows.length
+    );
+    expect(newTbodyLength).toEqual(tbodyLength + 1);
+    const editId = await page.$eval(
+      `table > tbody > tr:nth-child(${newTbodyLength}) > td:nth-child(2)`,
+      (t) => t.textContent
+    );
+    await expect(page).toClick(
+      `table > tbody > tr:nth-child(${newTbodyLength}) > td:nth-child(5) > a > button`,
+      { text: "Edit" }
+    );
+    await page.waitForResponse("http://localhost:3000/employees.json");
+    await page.waitForSelector("form");
+    await expect(page.url()).toEqual(
+      `http://localhost:3000/employees/${editId}/edit`
+    );
+    const input1 = await page.$eval(
+      "form > div:nth-child(11) > div > div:nth-child(1) > div > div > input",
+      (i) => i.value
+    );
+    const input2 = await page.$eval(
+      "form > div:nth-child(11) > div > div:nth-child(2) > div > div > input",
+      (i) => i.value
+    );
+    const input3 = await page.$eval(
+      "form > div:nth-child(11) > div > div:nth-child(3) > div > div > input",
+      (i) => i.value
+    );
+
+    expect(input1).toEqual("ICE fname");
+    expect(input2).toEqual("ICE lname");
+    expect(input3).toEqual("123");
+  });
+
+  it("Creates a new employee with emergency contacts then changes them in the edit form", async () => {
+    await page.goto("http://localhost:3000/?tab=1");
+    await page.waitForResponse("http://localhost:3000/employees.json");
+    await page.waitForSelector("table");
+    const tbodyLength = await page.$eval("table tbody", (t) => t.rows.length);
+    await expect(page).toClick("button", { text: "New Employee +" });
+    await page.waitForSelector("form");
+    await expect(page.url()).toEqual("http://localhost:3000/employees/new");
+    await expect(page).toFillForm("form", {
+      fname: "Contacts Edit",
+      lname: "Test",
+    });
+    await expect(page).toClick("button", { text: "New Emergency Contact +" });
+    await expect(page).toFillForm("form", {
+      "emergency_contacts_attributes[0].fname": "ICE fname",
+      "emergency_contacts_attributes[0].lname": "ICE lname",
+      "emergency_contacts_attributes[0].number": "123",
+    });
+    await page.focus("[type='submit']");
+    page.keyboard.press("Enter");
+    await page.waitForResponse("http://localhost:3000/employees.json");
+    await page.waitForSelector("table");
+    await expect(page.url()).toEqual("http://localhost:3000/?tab=1");
+    const newTbodyLength = await page.$eval(
+      "table tbody",
+      (t) => t.rows.length
+    );
+    expect(newTbodyLength).toEqual(tbodyLength + 1);
+    const editId = await page.$eval(
+      `table > tbody > tr:nth-child(${newTbodyLength}) > td:nth-child(2)`,
+      (t) => t.textContent
+    );
+    await expect(page).toClick(
+      `table > tbody > tr:nth-child(${newTbodyLength}) > td:nth-child(5) > a > button`,
+      { text: "Edit" }
+    );
+    await page.waitForResponse("http://localhost:3000/employees.json");
+    await page.waitForSelector("form");
+    await expect(page.url()).toEqual(
+      `http://localhost:3000/employees/${editId}/edit`
+    );
+    await expect(page).toFillForm("form", {
+      "emergency_contacts_attributes[0].fname": "edited fname",
+      "emergency_contacts_attributes[0].lname": "edited lname",
+      "emergency_contacts_attributes[0].number": "456",
+    });
+    await page.focus("[type='submit']");
+    page.keyboard.press("Enter");
+    await page.waitForResponse(
+      `http://localhost:3000/employees/${editId}.json`
+    );
+    await page.waitForSelector("table");
+    await expect(page.url()).toEqual("http://localhost:3000/?tab=1");
+    await expect(page).toClick(
+      `table > tbody > tr:nth-child(${newTbodyLength}) > td:nth-child(5) > a > button`,
+      { text: "Edit" }
+    );
+    await page.waitForResponse("http://localhost:3000/employees.json");
+    await page.waitForSelector("form");
+    await expect(page.url()).toEqual(
+      `http://localhost:3000/employees/${editId}/edit`
+    );
+    const input1 = await page.$eval(
+      "form > div:nth-child(11) > div > div:nth-child(1) > div > div > input",
+      (i) => i.value
+    );
+    const input2 = await page.$eval(
+      "form > div:nth-child(11) > div > div:nth-child(2) > div > div > input",
+      (i) => i.value
+    );
+    const input3 = await page.$eval(
+      "form > div:nth-child(11) > div > div:nth-child(3) > div > div > input",
+      (i) => i.value
+    );
+
+    expect(input1).toEqual("edited fname");
+    expect(input2).toEqual("edited lname");
+    expect(input3).toEqual("456");
+  });
+
+  // it("Creates a new employee with emergency contacts then removes them in the edit form", async () => {
+  //   await page.goto("http://localhost:3000/?tab=1");
+  //   await page.waitForResponse("http://localhost:3000/employees.json");
+  //   await page.waitForSelector("table");
+  //   const tbodyLength = await page.$eval("table tbody", (t) => t.rows.length);
+  //   await expect(page).toClick("button", { text: "New Employee +" });
+  //   await page.waitForSelector("form");
+  //   await expect(page.url()).toEqual("http://localhost:3000/employees/new");
+  //   await expect(page).toFillForm("form", {
+  //     fname: "Contacts Apprentice",
+  //     lname: "Test",
+  //   });
+  //   await expect(page).toClick("button", { text: "New Emergency Contact +" });
+  //   await expect(page).toFillForm("form", {
+  //     "emergency_contacts_attributes[0].fname": "ICE fname",
+  //     "emergency_contacts_attributes[0].lname": "ICE lname",
+  //     "emergency_contacts_attributes[0].number": "123",
+  //   });
+  //   await page.focus("[type='submit']");
+  //   page.keyboard.press("Enter");
+  //   await page.waitForResponse("http://localhost:3000/employees.json");
+  //   await page.waitForSelector("table");
+  //   await expect(page.url()).toEqual("http://localhost:3000/?tab=1");
+  //   const newTbodyLength = await page.$eval(
+  //     "table tbody",
+  //     (t) => t.rows.length
+  //   );
+  //   expect(newTbodyLength).toEqual(tbodyLength + 1);
+  //   const editId = await page.$eval(
+  //     `table > tbody > tr:nth-child(${newTbodyLength}) > td:nth-child(2)`,
+  //     (t) => t.textContent
+  //   );
+  //   await expect(page).toClick(
+  //     `table > tbody > tr:nth-child(${newTbodyLength}) > td:nth-child(5) > a > button`,
+  //     { text: "Edit" }
+  //   );
+  //   await page.waitForResponse("http://localhost:3000/employees.json");
+  //   await page.waitForSelector("form");
+  //   await expect(page.url()).toEqual(
+  //     `http://localhost:3000/employees/${editId}/edit`
+  //   );
+  //   await expect(page).toClick(
+  //     "form > div:nth-child(11) > div > div:nth-child(5) > button",
+  //     { text: "Remove" }
+  //   );
+  //   await page.focus("[type='submit']");
+  //   await page.keyboard.press("Enter");
+  //   const res = await page.waitForResponse(
+  //     `http://localhost:3000/employees/${editId}.json`
+  //   );
+  //   await page.waitForSelector("table");
+  //   await expect(page.url()).toEqual("http://localhost:3000/?tab=1");
+  // expect(res).toEqual(0);
+  // const iceForm = page.$$eval(
+  //   "form > div:nth-child(11) > div > div:nth-child(1) > div > div > input"
+  // );
+  // await expect(page).toClick(
+  //   `table > tbody > tr:nth-child(${newTbodyLength}) > td:nth-child(5) > a > button`,
+  //   { text: "Edit" }
+  // );
+  // await page.waitForResponse("http://localhost:3000/employees.json");
+  // await page.waitForSelector("form");
+  // await expect(page.url()).toEqual(
+  //   `http://localhost:3000/employees/${editId}/edit`
+  // );
+  // });
 });
