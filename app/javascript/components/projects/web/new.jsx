@@ -24,6 +24,7 @@ function NewProject(props) {
       const req = props.addProject(values);
       req.then(() => {
         props.history.push("/?tab=2");
+        toastr.success("Created Project");
       });
     }
   };

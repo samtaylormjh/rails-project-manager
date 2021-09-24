@@ -24,6 +24,7 @@ export default function SelectField(props) {
     <div>
       <FormGroup>
         <Select
+          className="site_supervisors_select"
           valid={meta.modified && meta.valid}
           invalid={meta.modified && meta.invalid}
           onChange={customOnChange}

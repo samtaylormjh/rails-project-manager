@@ -1,15 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
-import { updateProject } from "../actions";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Form, Field } from "react-final-form";
 import arrayToSentence from "array-to-sentence";
-import {
-  Button,
-  UncontrolledPopover,
-  PopoverHeader,
-  PopoverBody,
-} from "reactstrap";
+import { Button, Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import { TextareaField } from "components/helpers";
 
 function ProjectRow(props) {
@@ -33,18 +26,11 @@ function ProjectRow(props) {
       >
         Click to view...
       </td>
-      <UncontrolledPopover
-        trigger="legacy"
-        placement="right"
-        target={`popover${project.id}`}
-      >
-        <PopoverHeader>{project.name} Notes</PopoverHeader>
-        <PopoverBody>
-          {/* <li>Cool list of notes</li>
-          <br /> */}
-          <Notes notes={project} updateProject={props.updateProject} />
-        </PopoverBody>
-      </UncontrolledPopover>
+      <Notes
+        notes={project}
+        updateProject={props.updateProject}
+        project={props.project}
+      />
       <td>
         <Link to={`projects/${project.id}/edit`}>
           <Button size="sm">Edit</Button>
@@ -66,17 +52,38 @@ function ProjectRow(props) {
 export default ProjectRow;
 
 function Notes(props) {
+  const { notes, project } = props;
+
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const toggle = () => setPopoverOpen(!popoverOpen);
+
   const handleSubmit = (values) => {
     const req = props.updateProject(values);
     req.then(() => {
-      //close popover? or recall the list of notes to show the added one
+      toggle();
+      toastr.success("Saved notes");
     });
   };
 
-  const { notes } = props;
-
   return (
-    <Form component={NoteForm} onSubmit={handleSubmit} initialValues={notes} />
+    <Popover
+      placement="right"
+      target={`popover${project.id}`}
+      trigger="legacy"
+      isOpen={popoverOpen}
+      toggle={toggle}
+    >
+      <PopoverHeader>{project.name} Notes</PopoverHeader>
+      <PopoverBody>
+        {/* <li>Cool list of notes</li>
+          <br /> */}
+        <Form
+          component={NoteForm}
+          onSubmit={handleSubmit}
+          initialValues={notes}
+        />
+      </PopoverBody>
+    </Popover>
   );
 }
 
