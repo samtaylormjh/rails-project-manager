@@ -36,6 +36,7 @@ function ProjectRow(props) {
           <Button size="sm">Edit</Button>
         </Link>{" "}
         <Button
+          id={`${project.id}.delete`}
           color="danger"
           size="sm"
           onClick={() => {

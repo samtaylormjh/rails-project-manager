@@ -16,6 +16,7 @@ function NewProject(props) {
     const req = props.addEmployee(values);
     req.then(() => {
       props.history.push("/?tab=1");
+      toastr.success("Created Employee");
     });
   };
 

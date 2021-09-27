@@ -29,7 +29,10 @@ function ProjectForm(props) {
     if (props.employees.length === 0) {
       props.getEmployees();
     }
-    if (props.employees.length === 0) {
+  }, []);
+
+  useEffect(() => {
+    if (props.projects.length === 0) {
       props.getProjects();
     }
   }, []);

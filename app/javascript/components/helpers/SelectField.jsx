@@ -1,5 +1,6 @@
 import React from "react";
 import Select from "react-select";
+import CreateableSelect from "react-select/creatable";
 import { FormGroup } from "reactstrap";
 import _ from "lodash";
 
@@ -24,12 +25,14 @@ export default function SelectField(props) {
     <div>
       <FormGroup>
         <Select
-          className="site_supervisors_select"
+          classNamePrefix="site_supervisors"
           valid={meta.modified && meta.valid}
           invalid={meta.modified && meta.invalid}
           onChange={customOnChange}
           options={options}
           value={value}
+          // noOptionsMessage={() => null}
+          // isValidNewOption={() => false}
         />
       </FormGroup>
     </div>

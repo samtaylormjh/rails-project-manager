@@ -27,6 +27,7 @@ function EditProject(props) {
     const req = props.updateEmployee(values);
     req.then(() => {
       props.history.push("/?tab=1");
+      toastr.success("Updated Employee");
     });
   };
 
