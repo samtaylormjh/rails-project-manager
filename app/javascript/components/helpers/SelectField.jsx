@@ -5,7 +5,7 @@ import { FormGroup } from "reactstrap";
 import _ from "lodash";
 
 export default function SelectField(props) {
-  const { input, meta, options } = props;
+  const { input, meta, options, classNamePrefix } = props;
 
   // let filteredOptions = options.filter(
   //   (o) => o.value !== props?.formValues?.employee_id
@@ -20,12 +20,13 @@ export default function SelectField(props) {
     }
     // call the onChange in the final-form field
   };
+  console.log(classNamePrefix);
 
   return (
     <div>
       <FormGroup>
         <Select
-          classNamePrefix="site_supervisors"
+          classNamePrefix={classNamePrefix}
           valid={meta.modified && meta.valid}
           invalid={meta.modified && meta.invalid}
           onChange={customOnChange}

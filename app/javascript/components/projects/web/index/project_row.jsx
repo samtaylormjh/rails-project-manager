@@ -40,7 +40,7 @@ function ProjectRow(props) {
           color="danger"
           size="sm"
           onClick={() => {
-            props.deleteProject(project.id);
+            const req = props.deleteProject(project.id);
           }}
         >
           Delete

@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.feature "Projects::Indices", type: :feature do
   describe "Project Index page", :type => :feature do
     before :each do
-      1000.times do
-        create(:project)
+      5.times do
+        create(:project_with_ss)
       end
       visit '/?tab=2'
     end
@@ -14,15 +14,14 @@ RSpec.feature "Projects::Indices", type: :feature do
     end
 
     scenario "Displays a project correctly" do
-      emp = Employee.create(fname:'Test',lname:'Employee')
-      project_to_check = Project.create(number:3,name:'Display test',site_supervisors_attributes:[employee_id: emp.id])
+      project_to_check = create(:project_with_ss)
       visit '?tab=2'
-      expect(page).to have_css("table tbody tr", :count=>Project.count)
-      project_name = find("table tbody tr:nth-child(3) td:nth-child(1)").text
-      project_site_supervisor = find("table tbody tr:nth-child(3) td:nth-child(2)").text
-      project_id = find("table tbody tr:nth-child(3) td:nth-child(3)").text
+      has_css?("table tbody tr", :count=>Project.count)
+      project_name = find("table tbody tr:nth-child(#{project_to_check.id}) td:nth-child(1)").text
+      project_site_supervisor = find("table tbody tr:nth-child(#{project_to_check.id}) td:nth-child(2)").text
+      project_id = find("table tbody tr:nth-child(#{project_to_check.id}) td:nth-child(3)").text
       expect(project_name).to eq(project_to_check.name)
-      expect(project_site_supervisor).to eq(project_to_check.site_supervisors.map{|ss| ss.employee.display_name}.join(" "))
+      expect(project_site_supervisor).to eq(project_to_check.site_supervisors.map{|ss| ss.employee.display_name}.to_sentence)
       expect(project_id).to eq(project_to_check.id.to_s)
     end
 
@@ -40,19 +39,12 @@ RSpec.feature "Projects::Indices", type: :feature do
       expect(page).to have_content("Project")
     end
 
-    scenario "Creates then deletes a project" do
-      click_button('New Project')
-      has_current_path?("/projects/new")
-      has_selector?("form")
-      has_content?("Project")
-      fill_in('name', with: 'Test Project')
-      click_button('Submit')
-      
-      new_project = Project.find_by_name("Test Project")
-      expect(new_project.name).to eq("Test Project")
-      click_button(id: "#{new_project.id}.delete")
-      expect(page).to_not have_selector("button[id='#{new_project.id}.delete']")
-      expect(Project.count).to eq(2)
+    scenario "Can delete a project" do
+      initial_projects_count = Project.count
+      project_to_remove = Project.last
+      click_button(id: "#{project_to_remove.id}.delete")
+      expect(page).to_not have_selector("button[id='#{project_to_remove.id}.delete']")
+      expect(Project.count).to eq(initial_projects_count-1)
     end
 
     scenario "Adds a new note to project" do
@@ -67,7 +59,7 @@ RSpec.feature "Projects::Indices", type: :feature do
     end
 
     scenario "Notes display correctly" do
-      project_to_check = Project.create(number: 4,name: 'notes test',notes:'some notes')
+      project_to_check = Project.create(number: 7,name: 'notes test',notes:'some notes')
       visit '/?tab=2'
       find("#popover#{project_to_check.id}").click
       has_selector?("textarea[name='notes']")

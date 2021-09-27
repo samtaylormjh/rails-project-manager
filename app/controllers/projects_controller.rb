@@ -5,6 +5,9 @@ class ProjectsController < ApplicationController
     @projects = Project.all
   end
 
+  def show
+  end
+
   def create
     @project = Project.new(project_params)
     if @project.save

@@ -3,8 +3,9 @@ require 'rails_helper'
 RSpec.feature "Projects::New", type: :feature do
   describe "New Project page", :type => :feature do
     before :each do
-      Project.create(number:1,name:'1')
-      Project.create(number:2,name:'2')
+      5.times do
+        create(:project_with_ss)
+      end
       visit '/projects/new'
     end
 
@@ -21,28 +22,28 @@ RSpec.feature "Projects::New", type: :feature do
     end
     
     scenario "Creates a new project with all fields" do
-      expect(page).to have_selector("form")
+      has_selector?("form")
       fill_in('name', with: 'Project Test')
       click_button 'Submit'
-      expect(page).to have_current_path("/?tab=2")
+      has_current_path?("/?tab=2")
       get_last = Project.last
       expect(get_last.name).to eq("Project Test")
     end
 
     scenario "Creates a new project with a site supervisor" do
-      emp = Employee.create(fname:"Test",lname:"Employee")
+      emp = Employee.first
       has_current_path?("/projects/new")
       find("form")
       has_content?("Project")
       fill_in('name', with: 'Test Project')
       click_button('Add New Site Supervisor')
-      has_selector?(".site_supervisors__control")
-      find('.site_supervisors__control').click
-      find(".site_supervisors__option", text: "Test Employee").click
+      has_selector?(".site_supervisors0__control")
+      find('.site_supervisors0__control').click
+      find(".site_supervisors0__option", text: "#{emp.display_name}").click
       
       click_button('Submit')
       new_project = Project.find_by_name("Test Project")
-      expect(new_project.site_supervisors.ids).to eq([emp.id])
+      expect(new_project.site_supervisors.map{|ss| ss.employee_id}).to eq([emp.id])
     end  
 
   end

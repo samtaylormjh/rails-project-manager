@@ -167,6 +167,7 @@ function SiteSupervisorsFields(props) {
       </Label>
       <Col sm={3}>
         <Field
+          classNamePrefix={"site_supervisors" + index}
           component={SelectField}
           name={`${name}.employee_id`}
           label="Employees"
@@ -176,7 +177,12 @@ function SiteSupervisorsFields(props) {
         />
       </Col>
       <Col>
-        <Button type="button" color="danger" onClick={() => removeField(index)}>
+        <Button
+          type="button"
+          color="danger"
+          id={"delete_" + index}
+          onClick={() => removeField(index)}
+        >
           Remove
         </Button>
       </Col>
