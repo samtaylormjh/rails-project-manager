@@ -64,7 +64,11 @@ function EmployeeRow(props) {
   return (
     <>
       <tr>
-        <td onClick={toggle} style={{ cursor: "pointer" }}>
+        <td
+          onClick={toggle}
+          style={{ cursor: "pointer" }}
+          name={`${employee.id}_projects`}
+        >
           {isOpen ? "-" : "+"}
         </td>
         <td>{employee.id}</td>
@@ -140,6 +144,7 @@ const DeleteButton = (props) => {
   } else {
     return (
       <Button
+        id={`${employee.id}.delete`}
         color="danger"
         size="sm"
         onClick={() => {

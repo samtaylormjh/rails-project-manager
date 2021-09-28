@@ -81,6 +81,7 @@ function ApprenticeFields(props) {
     <FormGroup row key={index} className="mb-2">
       <Col sm={6}>
         <Field
+          classNamePrefix={"apprentices" + index}
           component={SelectField}
           name={`${name}.apprentice_id`}
           label="Employees"
@@ -89,7 +90,12 @@ function ApprenticeFields(props) {
         />
       </Col>
       <Col>
-        <Button type="button" color="danger" onClick={() => removeField(index)}>
+        <Button
+          type="button"
+          color="danger"
+          onClick={() => removeField(index)}
+          id={"apprentice_delete_" + index}
+        >
           Remove
         </Button>
       </Col>

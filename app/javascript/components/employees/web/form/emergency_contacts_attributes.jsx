@@ -67,6 +67,7 @@ function EmergencyContactFields(props) {
     <FormGroup row key={index} className="mb-2">
       <Col sm={3}>
         <Field
+          classNamePrefix={"emergency_contact_fname" + index}
           component={InputField}
           name={`${name}.fname`}
           label="First Name"
@@ -75,6 +76,7 @@ function EmergencyContactFields(props) {
       </Col>
       <Col sm={3}>
         <Field
+          classNamePrefix={"emergency_contact_lname" + index}
           component={InputField}
           label="Last Name"
           name={`${name}.lname`}
@@ -83,6 +85,7 @@ function EmergencyContactFields(props) {
       </Col>
       <Col sm={3}>
         <Field
+          classNamePrefix={"emergency_contact_number" + index}
           component={InputField}
           label="Number"
           name={`${name}.number`}
@@ -105,7 +108,12 @@ function EmergencyContactFields(props) {
         </Row>
       </Col>
       <Col>
-        <Button type="button" color="danger" onClick={() => removeField(index)}>
+        <Button
+          type="button"
+          color="danger"
+          onClick={() => removeField(index)}
+          id={"delete_" + index}
+        >
           Remove
         </Button>
       </Col>
